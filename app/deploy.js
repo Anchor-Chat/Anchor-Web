@@ -44,7 +44,7 @@ ipfsd.spawn({disposable: false, repoPath: opts.repoPath}, (err, ipfsNodee) => {
 			let stdoutArr = stdout.split("\n");
 	
 			console.log(stdout);
-	
+
 			let hash = stdoutArr[stdoutArr.length-1].substring(6, 52);
 	
 			publishIPNS(ipfs, hash, () => {
