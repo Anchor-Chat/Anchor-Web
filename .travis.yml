@@ -2,7 +2,7 @@ language: node_js
 
 node_js:
   - 9.8.0
-  
+
 env:
   global:
     - ELECTRON_CACHE=$HOME/.cache/electron
@@ -17,9 +17,12 @@ before_cache:
   - rm -rf $HOME/.ipfs/repo.lock
   - rm -rf $HOME/.ipfs/api
 
-before_script:
-  - echo $IPFS_KEY | openssl base64 -d -out $HOME/.ipfs/keystore/decentracord
+before_install:
   - curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | bash
+
+before_script:
+  - mkdir $HOME/.ipfs/keystore/
+  - echo $IPFS_KEY | openssl base64 -d -out $HOME/.ipfs/keystore/decentracord
 
 script:
   - npm test
