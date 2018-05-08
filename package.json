@@ -1,0 +1,42 @@
+{
+  "name": "decentracord-web",
+  "version": "1.0.0",
+  "description": "An app like discord just decentralized! - Web",
+  "main": "app/httpServer.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "nodemon . -w \"./app/src/ ./app/httpServer.js\"",
+    "test": "truffle.cmd test",
+    "testnet": "truffle.cmd migrate --network dev --reset",
+    "live": "truffle.cmd migrate --network live",
+    "deploy": "node ./app/deploy.js",
+    "build": "node ./app/build.js",
+    "genversion": "genversion app/version.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Decentracord/Decentracord-Web.git"
+  },
+  "author": {
+    "name": "lukas2005",
+    "email": "lukas2005.38@gmail.com"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Decentracord/Decentracord-Web/issues"
+  },
+  "homepage": "https://github.com/Decentracord/Decentracord-Web#readme",
+  "devDependencies": {
+    "express": "^4.16.3",
+    "express-pug-static": "^0.1.0",
+    "genversion": "^2.1.0",
+    "go-ipfs-dep": "^0.4.14",
+    "ipfsd-ctl": "^0.32.1",
+    "pug": "^2.0.3",
+    "truffle": "^4.1.8",
+    "web3": "github:ethereum/web3.js"
+  },
+  "dependencies": {}
+}
