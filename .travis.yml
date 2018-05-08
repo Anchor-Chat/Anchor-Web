@@ -23,7 +23,7 @@ before_install:
   - "curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | bash"
 
 before_script:
-  - mkdir $HOME/.ipfs/keystore/
+  - mkdir -p $HOME/.ipfs/keystore/
   - echo $IPFS_KEY | base64 -d > $HOME/.ipfs/keystore/decentracord
 
 script:
