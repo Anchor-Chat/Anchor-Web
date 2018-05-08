@@ -17,13 +17,13 @@ let files = opts.walkSync(opts.out);
 
 console.log("Deploying to IPFS");
 console.log("Starting an IPFS node");
-ipfsd.spawn({disposable: false, repoPath: "~/.ipfs"}, (err, ipfsNodee) => {
+ipfsd.spawn({disposable: false, repoPath: opts.repoPath}, (err, ipfsNodee) => {
 	if (err) throw err;
 
 	ipfsNode = ipfsNodee;
 	console.log("Starting the IPFS daemon");
 
-	isIPFSInitialized("~/.ipfs", (callback) => {
+	isIPFSInitialized(opts.repoPath, (callback) => {
 		ipfsNode.init((err) => {
 			if (err) throw err;
 			callback();
@@ -144,9 +144,14 @@ function pub(ipfs, hash, key, callback) {
 // 	} 
 // }
 
+/**
+ * 
+ * @param {string} repoPath 
+ * @param {function} ifNot 
+ * @param {function} callback 
+ */
 function isIPFSInitialized(repoPath, ifNot, callback) {
-	fs.exists(path.join(repoPath, "config"), (err, exists) => {
-		if (err) throw err;
+	fs.exists(path.join(repoPath, "config").replace("~", require("os").homedir()), (exists) => {
 		if (exists) {
 			callback();
 		} else {

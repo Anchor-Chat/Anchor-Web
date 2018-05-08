@@ -7,6 +7,7 @@ const path = require("path");
 const src = path.join("app", "src");
 const out = path.join("build", "web");
 const repoSlug = "Decentracord/Decentracord-Web";
+const repoPath = path.join("~", ".ipfs");
 
 const walkSync = (dir, filelist = []) => {
 	fs.readdirSync(dir).forEach(file => {
@@ -96,3 +97,4 @@ exports.out = out;
 exports.src = src;
 exports.walkSync = walkSync;
 exports.repoSlug = repoSlug;
+exports.repoPath = repoPath;

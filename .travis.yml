@@ -31,4 +31,5 @@ script:
   - npm run deploy
 
 after_success:
+  - fossa
   - fossa test
