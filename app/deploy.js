@@ -22,33 +22,38 @@ ipfsd.spawn({disposable: false, repoPath: "~/.ipfs"}, (err, ipfsNodee) => {
 	ipfsNode = ipfsNodee;
 	console.log("Starting the IPFS daemon");
 
-	ipfsNode.start((err, ipfs) => {
+	ipfsNode.init((err) => {
 		if (err) throw err;
 
-		console.log("The daemon is up and running!");
-		console.log("Adding files to IPFS...");
-
-		let add = spawnSync("node_modules/go-ipfs-dep/go-ipfs/ipfs", ["add", "-r", opts.out]);
-
-		let stdout = add.stdout.toString().split("\n");
-		stdout = stdout.slice(0, stdout.length-1);
-
-		console.log(stdout);
-
-		let hash = stdout[stdout.length-1].substring(6, 52);
-
-		publishIPNS(ipfs, hash, () => {
-			console.log("Cleaning up...");
-			ipfsNode.stop((err) => {
-				if (err) throw err;
-				ipfsNode.cleanup((err) => {
+		ipfsNode.start((err, ipfs) => {
+			if (err) throw err;
+	
+			console.log("The daemon is up and running!");
+			console.log("Adding files to IPFS...");
+	
+			let add = spawnSync("node_modules/go-ipfs-dep/go-ipfs/ipfs", ["add", "-r", opts.out]);
+	
+			let stdout = add.stdout.toString().split("\n");
+			stdout = stdout.slice(0, stdout.length-1);
+	
+			console.log(stdout);
+	
+			let hash = stdout[stdout.length-1].substring(6, 52);
+	
+			publishIPNS(ipfs, hash, () => {
+				console.log("Cleaning up...");
+				ipfsNode.stop((err) => {
 					if (err) throw err;
-					console.log("Done!");
-					process.exit();
+					ipfsNode.cleanup((err) => {
+						if (err) throw err;
+						console.log("Done!");
+						process.exit();
+					});
 				});
 			});
+	
 		});
-
+		
 	});
 });
 
