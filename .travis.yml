@@ -3,6 +3,8 @@ language: node_js
 node_js:
   - 9.8.0
 
+sudo: required
+
 env:
   global:
     - ELECTRON_CACHE=$HOME/.cache/electron
