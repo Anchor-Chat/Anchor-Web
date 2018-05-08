@@ -3,6 +3,7 @@ let opts = require("./build");
 const { spawnSync } = require("child_process");
 
 const fs = require("fs");
+const path = require("path");
 
 //const github = require("octonode");
 
@@ -22,8 +23,12 @@ ipfsd.spawn({disposable: false, repoPath: "~/.ipfs"}, (err, ipfsNodee) => {
 	ipfsNode = ipfsNodee;
 	console.log("Starting the IPFS daemon");
 
-	ipfsNode.init((err) => {
-		if (err) throw err;
+	isIPFSInitialized("~/.ipfs", (callback) => {
+		ipfsNode.init((err) => {
+			if (err) throw err;
+			callback();
+		});
+	}, () => {
 
 		ipfsNode.start((err, ipfs) => {
 			if (err) throw err;
@@ -53,8 +58,9 @@ ipfsd.spawn({disposable: false, repoPath: "~/.ipfs"}, (err, ipfsNodee) => {
 			});
 	
 		});
-		
+
 	});
+
 });
 
 let checkedForKey = false;
@@ -137,3 +143,14 @@ function pub(ipfs, hash, key, callback) {
 
 // 	} 
 // }
+
+function isIPFSInitialized(repoPath, ifNot, callback) {
+	fs.exists(path.join(repoPath, "config"), (err, exists) => {
+		if (err) throw err;
+		if (exists) {
+			callback();
+		} else {
+			ifNot(callback);
+		}
+	});
+}
