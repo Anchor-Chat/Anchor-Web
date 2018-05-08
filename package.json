@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "nodemon . -w \"./app/src/ ./app/httpServer.js\"",
-    "test": "truffle.cmd test",
+    "test": "truffle test",
     "testnet": "truffle.cmd migrate --network dev --reset",
     "live": "truffle.cmd migrate --network live",
     "deploy": "node ./app/deploy.js",

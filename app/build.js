@@ -39,6 +39,9 @@ if (fs.existsSync(out)) {
 }
 
 console.log("Build start");
+if (!fs.existsSync("build")) {
+	fs.mkdirSync("build");
+}
 fs.mkdirSync(out);
 
 console.log("Genversion");
