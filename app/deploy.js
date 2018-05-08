@@ -38,12 +38,14 @@ ipfsd.spawn({disposable: false, repoPath: opts.repoPath}, (err, ipfsNodee) => {
 	
 			let add = spawnSync("node_modules/go-ipfs-dep/go-ipfs/ipfs", ["add", "-r", opts.out]);
 	
-			let stdout = add.stdout.toString().split("\n");
-			stdout = stdout.slice(0, stdout.length-1);
+			let stdout = add.stdout.toString();
+			stdout = stdout.substring(0, stdout.lastIndexOf("\n"));
+
+			let stdoutArr = stdout.split("\n");
 	
 			console.log(stdout);
 	
-			let hash = stdout[stdout.length-1].substring(6, 52);
+			let hash = stdoutArr[stdoutArr.length-1].substring(6, 52);
 	
 			publishIPNS(ipfs, hash, () => {
 				console.log("Cleaning up...");
@@ -107,11 +109,12 @@ function pub(ipfs, hash, key, callback) {
 	console.log("Publishing the IPNS name...");
 
 	ipfs.name.publish(hash, { key: key.name }, (err, name) => {
-		if (err) throw err;
-
-		console.log("The published IPNS name is: "+name.name);
-		console.log("and it resolves to: "+name.value);
-
+		if (err) {
+			console.error(err);
+		} else {
+			console.log("The published IPNS name is: "+name.name);
+			console.log("and it resolves to: "+name.value);
+		}
 		callback();
 	});	
 }
