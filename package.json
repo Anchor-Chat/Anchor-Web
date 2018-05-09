@@ -33,6 +33,7 @@
     "express-pug-static": "^0.1.0",
     "genversion": "^2.1.0",
     "go-ipfs-dep": "^0.4.14",
+    "ipfs-api-utils": "github:Decentracord/js-ipfs-api-utils",
     "ipfsd-ctl": "^0.32.1",
     "pug": "^2.0.3",
     "truffle": "^4.1.8",

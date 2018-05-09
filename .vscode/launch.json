@@ -8,27 +8,13 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Web Deploy",
-            "program": "${workspaceFolder}/app/web_app/deploy.js"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Electron Main",
-            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
-            "program": "${workspaceFolder}/app/electron_app/index.js",
-            "protocol": "inspector"
+            "program": "${workspaceFolder}/app/deploy.js"
         },
         {
             "type": "node",
             "request": "launch",
             "name": "Launch build.js",
-            "program": "${workspaceFolder}/app/web_app/build.js"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}\\app\\index.js"
+            "program": "${workspaceFolder}/app/build.js"
         }
     ]
 }

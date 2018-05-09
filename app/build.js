@@ -1,13 +1,14 @@
 const pug = require("pug");
 const gv = require("genversion");
 
+const os = require("os");
 const fs = require("fs");
 const path = require("path");
 
 const src = path.join("app", "src");
 const out = path.join("build", "web");
 const repoSlug = "Decentracord/Decentracord-Web";
-const repoPath = path.join("~", ".ipfs");
+const repoPath = path.join(os.homedir(), ".ipfs");
 
 const walkSync = (dir, filelist = []) => {
 	fs.readdirSync(dir).forEach(file => {

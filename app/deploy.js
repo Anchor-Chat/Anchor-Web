@@ -11,6 +11,9 @@ const IPFSFactory = require("ipfsd-ctl");
 let ipfsd = IPFSFactory.create();
 let ipfsNode;
 
+const ipfsApiUtils = require("ipfs-api-utils");
+const iconv = require("iconv-lite");
+
 let files = opts.walkSync(opts.out);
 
 //gh_deploy(files);
@@ -32,7 +35,8 @@ ipfsd.spawn({disposable: false, repoPath: opts.repoPath}, (err, ipfsNodee) => {
 
 		ipfsNode.start((err, ipfs) => {
 			if (err) throw err;
-	
+			ipfsApiUtils(ipfs, opts.repoPath);
+
 			console.log("The daemon is up and running!");
 			console.log("Adding files to IPFS...");
 	
@@ -82,11 +86,20 @@ function genKey(ipfs, name, callback) {
 			}));
 			
 			if (!exists) {
-				console.log("Generating the key...");
-				ipfs.key.gen(name, {
-					type: "rsa",
-					size: 2048
-				}, (err, key) => {callback(err, key);});
+				if (!process.env.IPFS_KEY_HASH) {
+					console.log("Generating the key...");
+					ipfs.key.gen(name, {
+						type: "rsa",
+						size: 2048
+					}, callback);
+				} else {
+					console.log("Importing the key from the IPFS hash provided in the $IPFS_KEY_HASH env var");
+					ipfs.files.get(process.env.IPFS_KEY_HASH, (err, files) => {
+						if (err) throw err;
+						let buffer = files[0].content;
+						ipfs.utils.importKey(name, buffer, callback);
+					});
+				}
 			} else {
 				callback(err, {name: name});
 			}

@@ -19,17 +19,6 @@ before_cache:
   - rm -rf $HOME/.ipfs/repo.lock
   - rm -rf $HOME/.ipfs/api
 
-before_install:
-  - "curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | bash"
-
-before_script:
-  - mkdir -p $HOME/.ipfs/keystore/
-  - echo $IPFS_KEY | base64 -d > $HOME/.ipfs/keystore/decentracord
-
 script:
   - npm test
   - npm run deploy
-
-after_success:
-  - fossa
-  - fossa test
