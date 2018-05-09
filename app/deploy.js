@@ -12,7 +12,6 @@ let ipfsd = IPFSFactory.create();
 let ipfsNode;
 
 const ipfsApiUtils = require("ipfs-api-utils");
-const iconv = require("iconv-lite");
 
 let files = opts.walkSync(opts.out);
 
