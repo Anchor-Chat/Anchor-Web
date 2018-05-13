@@ -11,6 +11,7 @@ contract Storage is Claimable {
 	mapping(bytes32 => string)     private stringStorage;
 	mapping(bytes32 => address)    private addressStorage;
 	mapping(bytes32 => bytes)      private bytesStorage;
+	mapping(bytes32 => bytes32)    private bytes32Storage;
 	mapping(bytes32 => bool)       private boolStorage;
 	mapping(bytes32 => int256)     private intStorage;
 
@@ -52,6 +53,11 @@ contract Storage is Claimable {
 	}
 
 	/// @param _key The key for the record
+	function getBytes32(bytes32 _key) external view returns (bytes32) {
+		return bytes32Storage[_key];
+	}
+
+	/// @param _key The key for the record
 	function getBool(bytes32 _key) external view returns (bool) {
 		return boolStorage[_key];
 	}
@@ -83,6 +89,11 @@ contract Storage is Claimable {
 	/// @param _key The key for the record
 	function setBytes(bytes32 _key, bytes _value) onlyLatestContract external {
 		bytesStorage[_key] = _value;
+	}
+
+	/// @param _key The key for the record
+	function setBytes32(bytes32 _key, bytes32 _value) onlyLatestContract external {
+		bytes32Storage[_key] = _value;
 	}
 	
 	/// @param _key The key for the record

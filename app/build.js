@@ -4,6 +4,7 @@ const gv = require("genversion");
 const os = require("os");
 const fs = require("fs");
 const path = require("path");
+const http = require("http");
 
 const src = path.join("app", "src");
 const out = path.join("build", "web");
@@ -46,6 +47,26 @@ if (!fs.existsSync("build")) {
 }
 fs.mkdirSync(out);
 
+console.log("Updating local libraries...");
+http.get("http://unpkg.com/ipfs-api/dist/index.js", response => {
+	response.on("data", (data) => {
+		let url = "http://unpkg.com"+data.toString().substring(22);
+		http.get(url, response => {
+			response.pipe(fs.createWriteStream("app/src/js/lib/ipfs-api.js")).on("error", (err) => {
+				console.error(err);
+			});
+		});
+	});
+});
+
+http.get("http://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js", response => {
+	response.pipe(fs.createWriteStream("app/src/js/lib/web3.min.js")).on("error", (err) => {
+		console.error(err);
+	});
+});
+
+fs.copyFileSync("node_modules/jquery/dist/jquery.min.js", "app/src/js/lib/jquery.min.js");
+
 console.log("Genversion");
 gv.check("lib/version.js", (err, doesExist, isByGenversion) => {
 	if (err) throw err;
@@ -66,6 +87,10 @@ files.forEach(file => {
 	let outPath = path.join(out, inPath.dir.substring(src.length), inPath.name);
 	let outPathP = path.parse(outPath);
 
+	let grandParent = path.parse(outPathP.dir).dir;
+	if (!fs.existsSync(grandParent)) {
+		fs.mkdirSync(grandParent);
+	}
 	if (!fs.existsSync(outPathP.dir)) {
 		fs.mkdirSync(outPathP.dir);
 	}

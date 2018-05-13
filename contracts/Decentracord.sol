@@ -10,8 +10,11 @@ contract Decentracord {
 		dataStore = Storage(storageAddress);
 	}
 	
-	function newUser(string nick) external {
-		dataStore.setString(keccak256("user.nick", msg.sender), nick);
+	function createServer(string serverName) external returns (bytes32) {
+		bytes32 serverId = keccak256(msg.sender, block.number);
+		dataStore.setBytes32(keccak256("server.id", serverId), serverId);
+		dataStore.setString(keccak256("server.name", serverId), serverName);
+		return serverId;
 	}
 	
 }

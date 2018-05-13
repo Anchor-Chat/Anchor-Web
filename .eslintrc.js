@@ -2,7 +2,8 @@ module.exports = {
     "env": {
         "browser": true,
         "es6": true,
-        "node": true
+        "node": true,
+        "jquery": true
     },
     "extends": "eslint:recommended",
     "rules": {
@@ -28,10 +29,10 @@ module.exports = {
         "no-empty": "warn"
     },
     "globals": {
-        "io": false,
-        "socket": false,
-        "google": false,
-        "nameIntoCode": false,
-        "artifacts": false
+        "IpfsApi": false,
+        "Web3": false,
+        "web3": true,
+        "artifacts": false,
+        "Decentracord": false
     }
 };

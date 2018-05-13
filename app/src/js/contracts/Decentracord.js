@@ -1,0 +1,3 @@
+const Decentracord = (web3, address) => { let Contract = web3.eth.contract(Decentracord.ABI); return Contract.at(!address ? "0x91a3151f1c62153d3699668127233dde45573ae8" : address); };
+Decentracord.ABI = [{"constant":true,"inputs":[],"name":"dataStore","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"storageAddress","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"constant":false,"inputs":[{"name":"serverName","type":"string"}],"name":"createServer","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"nonpayable","type":"function"}];
+Decentracord.Hash = "f5bd3aea83236fe3ef786dec6609d5980a4165e0fe2c6ba53d6c89a85c689c40";

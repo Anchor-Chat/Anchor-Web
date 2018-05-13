@@ -2,8 +2,9 @@ let opts = require("./build");
 
 const { spawnSync } = require("child_process");
 
-const fs = require("fs");
 const path = require("path");
+const fs = require("fs");
+
 
 //const github = require("octonode");
 
@@ -120,6 +121,9 @@ function publishIPNS(ipfs, hash, callback) {
 function pub(ipfs, hash, key, callback) {
 	console.log("Publishing the IPNS name...");
 
+	ipfs.swarm.peers((err, peerInfos) => {
+		console.log(peerInfos);
+	});
 	ipfs.name.publish(hash, { key: key.name }, (err, name) => {
 		if (err) {
 			console.error(err);

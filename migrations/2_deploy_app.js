@@ -1,11 +1,10 @@
-//const Web3 = require("web3");
-
 const Storage = artifacts.require("Storage");
 const Decentracord = artifacts.require("Decentracord");
 
 const fs = require("fs");
 
 const Web3 = require("web3");
+let web3 = new Web3();
 
 let storage;
 
@@ -27,17 +26,18 @@ module.exports = (deployer, network) => {
 		);
 	}).then(() => {
 		// Register contracts with the hub (the Storage contract)
-		registerContract(Decentracord, "Main");
+		registerContract(Decentracord);
 
 		// Create contract import scripts for the frontend app
-		//createImportScript(Storage);
-		//createImportScript(Decentracord);
+		createImportScript(Storage);
+		createImportScript(Decentracord);
 	});
 };
 
-function registerContract(contract, name) {
-	storage.setAddress("contract.name"+name, contract.address);
-	storage.setAddress("contract.address"+contract.address, contract.address);
+function registerContract(contract) {
+	contract.registered = true;
+	storage.setAddress(web3.sha3("contract.name"+contract.contractName), contract.address);
+	storage.setAddress(web3.sha3("contract.address"+contract.address), contract.address);
 }
 
 /**
@@ -46,12 +46,13 @@ function registerContract(contract, name) {
  * If not sealed then can be changed by the owner AND by the registered contracts
  */
 function sealStorage() {
-	storage.setBool("contract.storage.initialised", true);
+	storage.setBool(web3.sha3("contract.storage.initialised"), true);
 }
 
 function createImportScript(contract) {
-	let js = "let ABI = "+JSON.stringify(contract.abi)+";\r\n";
-	js    += "module.exports = (web3, address) => { let Contract = web3.eth.contract(ABI); return Contract.at(!address ? "+contract.address+" : address); };";
+	let js    = "const "+ contract.contractName +" = (web3, address) => { let Contract = web3.eth.contract("+ contract.contractName +".ABI); return Contract.at(!address ? \""+contract.address+"\" : address); };\r\n";
+	js       += contract.contractName+".ABI = "+JSON.stringify(contract.abi)+";\n";
+	if (contract.registered) js += contract.contractName+".Hash = \""+web3.sha3("contract.name"+contract.contractName)+"\";";
 
-	fs.writeFileSync("./app/contracts/"+contract.contractName+".js", js);
+	fs.writeFileSync("./app/src/js/contracts/"+contract.contractName+".js", js);
 }

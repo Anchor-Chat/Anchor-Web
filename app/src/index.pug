@@ -5,10 +5,33 @@ html(lang='en')
 		title Decentracord
 		meta(name='description', content='Decentracord - an app just like discord but living entirely on the IPFS network and the Ethereum blockchain')
 		meta(name='author', content='lukas2005')
+		link(rel='stylesheet', href='css/materialize.min.css')
+		link(rel='stylesheet', href='fonts/junction/junction.css')
 		link(rel='stylesheet', href='css/styles.css')
 		!= "<!--[if lt IE 9]>"
 		!= '<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>'
 		!= "<![endif]-->"
 	body
-		p Test
-		script(src='js/index.js')
+		.guilds-wrapper
+			.scroller-wrap
+				.guilds.scroller
+					.guild
+						.guild-inner(draggable="false", style="border-radius: 25px; background-color: rgb(47, 49, 54);")
+							a(href="")
+								.friends-icon
+					.friends-online 7 online
+					.dms
+					.guild-separator
+					.guild
+
+		// Libs
+		script(src="js/lib/web3.min.js")
+		script(src="js/lib/web3.min.js")
+		script(src="js/lib/ipfs-api.js")
+		script(src="js/lib/materialize.min.js")
+		script(src="js/lib/jquery.min.js")
+
+		// My js
+		script(src="js/contracts/Storage.js")
+		script(src="js/contracts/Decentracord.js")
+		script(src="js/index.js")
