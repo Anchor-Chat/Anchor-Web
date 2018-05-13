@@ -123,16 +123,17 @@ function pub(ipfs, hash, key, callback) {
 
 	ipfs.swarm.peers((err, peerInfos) => {
 		console.log(peerInfos);
+
+		ipfs.name.publish(hash, { key: key.name }, (err, name) => {
+			if (err) {
+				console.error(err);
+			} else {
+				console.log("The published IPNS name is: "+name.name);
+				console.log("and it resolves to: "+name.value);
+			}
+			callback();
+		});	
 	});
-	ipfs.name.publish(hash, { key: key.name }, (err, name) => {
-		if (err) {
-			console.error(err);
-		} else {
-			console.log("The published IPNS name is: "+name.name);
-			console.log("and it resolves to: "+name.value);
-		}
-		callback();
-	});	
 }
 
 // function gh_deploy(files) {
