@@ -14,6 +14,6 @@ app.use(static({
 }));
 app.use(express.static(html_path));
 
-app.listen(8000, () => {
+app.listen(process.env.PORT || 8000, () => {
 	console.log("Listening!");
 });
