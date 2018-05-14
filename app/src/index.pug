@@ -18,14 +18,14 @@ html(lang='en')
 	body
 
 		#app
-			.guilds
+			.guildsapp
 				.scroller
-					.guild(id="0")
+					.guild(id="0", data-toggle="tooltip" data-placement="right", title="Private messages")
 						a.overflow.waves-effect.waves-light(draggable="false", href="/guilds/0")
-							i.material-icons people
+							i.material-icons chat
 					.separator.friends-online
 						span {{ friendsOnline }} online
-					.guild(v-for="guild in guilds", :id="guild.id", draggable="true")
+					.guild(v-for="guild in guilds", :id="guild.id", draggable="true", data-toggle="tooltip" data-placement="right", :title="guild.name")
 						a.waves-effect.waves-light(draggable="false", :href="'/guilds/'+guild.id")
 							img(v-if="guild.id !== 0", :src="guild.img")
 
@@ -41,9 +41,9 @@ html(lang='en')
 		script(src="js/lib/web3.min.js")
 		script(src="js/lib/ipfs-api.js")
 		script(src="js/lib/jquery.min.js")
-		script(src="js/lib/pug.js")
 
-
+		// Vue.js Components
+		script(src="components/guild-view/index.js")
 		// My js
 		script(src="js/contracts/Storage.js")
 		script(src="js/contracts/Decentracord.js")

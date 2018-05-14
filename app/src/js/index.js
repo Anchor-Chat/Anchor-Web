@@ -87,6 +87,11 @@ let vue = new Vue({
 				id: 1,
 				name: "N-O-D-E Community",
 				img: "https://cdn.discordapp.com/icons/438687916026232842/18c1e0ed2eda1b3e88a0515e28b3b50f.png"
+			},
+			{
+				id: 2,
+				name: "Valkyrie",
+				img: "https://cdn.discordapp.com/attachments/373141391909584910/445586709992833034/image.png"
 			}
 		],
 		friendsOnline: 10
@@ -104,4 +109,10 @@ function main() {
 	// showDialog("Hello", () => {
 	// 	console.log("Yay");
 	// });
+	$(document).ready(function(){
+		$("[data-toggle=\"tooltip\"]").tooltip();   
+	});
+	$(".guild").hover((e) => {
+		$(e.target).tooltip();
+	});
 }
