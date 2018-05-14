@@ -1,5 +1,5 @@
 body {
-    background-color: #2c2f33;
+    background-color: #424242;
     color: white;
     font-family: 'Junction';
     -moz-user-select: none;
@@ -12,20 +12,6 @@ body {
     user-select: none;
 }
 
-#spinner {
-    color: white;
-    width: 100px;
-    height: 100px;
-
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    margin: auto;
-}
-
 #dialog {
     border-radius: 1%;
     -moz-border-radius: 1%;
@@ -33,7 +19,7 @@ body {
 
     width: 520px;
     height: 420px;
-    background-color: #373B40;
+    background-color: #1b1b1b;
 
     position: absolute;
     top: 0;
@@ -74,165 +60,66 @@ body {
     right: 0;
 
     margin: auto;
-    background-color: #2c2f3380
-}
-
-.dark-not-black {
-    background-color: #2c2f33;
+    background-color: #42424280
 }
 
 .button {
-    background-color: #44494F;
+    background-color: #424242 !important;
 }
 
-.button:hover {
-    background-color: #6E757F;
-}
-
-div {
-    border: 0;
-    font-family: inherit;
-    font-size: 100%;
-    font-style: inherit;
-    font-weight: inherit;
-    margin: 0;
-    outline: 0;
-    padding: 0;
-    vertical-align: baseline;
-}
-
-.guilds-wrapper {
-    -ms-flex-direction: column;
-    -ms-flex-negative: 0;
-    -webkit-box-direction: normal;
-    -webkit-box-orient: vertical;
-    background-color: #202225;
-    contain: layout;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    overflow: hidden;
-    position: relative;
-    width: 70px;
-}
-
-.guilds-wrapper .scroller-wrap {
-    width: 88px;
-}
-
-.scroller-wrap {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    position: relative;
-}
-
-.scroller-wrap, .scroller-wrap .scroller {
-    -ms-flex: 1;
-    -webkit-box-flex: 1;
-    flex: 1;
-    min-height: 1px;
-}
-
-.scroller-wrap .scroller {
-    contain: layout;
-    overflow-y: scroll;
-}
-
-.guilds-wrapper .guilds {
-    -moz-user-select: none;
-    -ms-flex: 1;
-    -ms-user-select: none;
-    -webkit-box-flex: 1;
-    -webkit-user-select: none;
-    flex: 1;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    padding: 10px 0 10px 10px;
-    user-select: none;
+.guilds {
+    background-color: #6d6d6d;
     height: 949px;
+    width: 70px;
+    overflow: hidden;
 }
 
-.guilds-wrapper .guilds .guild {
-    height: 50px;
-    position: relative;
+.guilds .scroller {
+    width: 88px;
+    height: 949px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.guild {
     width: 50px;
-    z-index: 1;
+    height: 50px;
+    text-align: center;
+    padding-left: 15px;
+    padding-top: 10px;
 }
 
-.guilds-wrapper .guilds .guild+.guild {
-    margin-top: 8px;
+.guild a {
+    width: 40px;
+    height: 40px;
 }
 
-.guilds-wrapper .guilds .friends-online {
+.guild i {
+    font-size: 40px;
+}
+
+.guild img {
+    width: 40px;
+    height: 40px;
+}
+
+.guilds .separator {
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.overflow {
+    overflow: visible;
+}
+
+.friends-online {
     color: hsla(0,0%,100%,.3);
     font-size: 10px;
     font-weight: 500;
     line-height: 130%;
-    margin: 10px 0;
     text-align: center;
     text-transform: uppercase;
     white-space: nowrap;
     width: 50px;
     word-wrap: normal;
-}
-
-.guilds-wrapper .dms {
-    display: block;
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-.guilds-wrapper .guild-separator {
-    background: none;
-    height: 2px;
-    margin-bottom: 10px;
-    position: relative;
-    width: 50px;
-}
-
-.guilds-wrapper .guild-separator:after {
-    background: #2f3136;
-    content: " ";
-    height: 2px;
-    left: 20%;
-    position: absolute;
-    right: 20%;
-    top: 0;
-}
-
-.guilds-wrapper .guilds .guild.selected:before {
-    -webkit-transition: height .25s ease-in-out,margin-top .25s ease-in-out;
-    background: #fff;
-    border-radius: 20px;
-    height: 40px;
-    margin-top: -20px;
-    transition: height .25s ease-in-out,margin-top .25s ease-in-out;
-}
-.guilds-wrapper .guilds .guild.unread:before {
-    background: #8a8e94;
-    border-radius: 5px;
-    height: 10px;
-    margin-top: -6px;
-}
-.guilds-wrapper .guilds .guild.selected:before, .guilds-wrapper .guilds .guild.unread:before {
-    border-radius: 20px;
-    content: " ";
-    height: 40px;
-    left: -15px;
-    margin-top: -20px;
-    position: absolute;
-    top: 50%;
-    width: 10px;
-}
-
-.guilds-wrapper .guilds .friends-icon {
-    background-image: url(/img/friends.svg);
-    background-position: 50%;
-    background-repeat: no-repeat;
-    background-size: 32px 28px;
-    height: 50px;
-    width: 50px;
 }

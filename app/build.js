@@ -11,6 +11,20 @@ const out = path.join("build", "web");
 const repoSlug = "Decentracord/Decentracord-Web";
 const repoPath = path.join(os.homedir(), ".ipfs");
 
+function mkdirs(location) {
+	let normalizedPath = path.normalize(location);
+	let parsedPathObj = path.parse(normalizedPath);
+	let curDir = parsedPathObj.root;
+	let folders = parsedPathObj.dir.split(path.sep);
+	folders.push(parsedPathObj.base);
+	for(let part of folders) {
+		curDir = path.join(curDir, part);
+		if (!fs.existsSync(curDir)) {
+			fs.mkdirSync(curDir);
+		}
+	}
+}
+
 const walkSync = (dir, filelist = []) => {
 	fs.readdirSync(dir).forEach(file => {
   
@@ -36,6 +50,23 @@ let rmdirSync = (path) => {
 	}
 };
 
+function simpleLibUpdate(url, dir, name) {
+	http.get(url, response => {
+		response.pipe(fs.createWriteStream(dir+"/"+name)).on("error", (err) => {
+			console.error(err);
+		});
+	});
+}
+
+function unpkgLibUpdate(url, dir, name) {
+	http.get(url, response => {
+		response.on("data", (data) => {
+			url = "http://unpkg.com"+data.toString().substring(22);
+			simpleLibUpdate(url, dir, name);
+		});
+	});
+}
+
 if (fs.existsSync(out)) {
 	console.log("Prebuild cleanup");
 	rmdirSync(out);
@@ -48,24 +79,15 @@ if (!fs.existsSync("build")) {
 fs.mkdirSync(out);
 
 console.log("Updating local libraries...");
-http.get("http://unpkg.com/ipfs-api/dist/index.js", response => {
-	response.on("data", (data) => {
-		let url = "http://unpkg.com"+data.toString().substring(22);
-		http.get(url, response => {
-			response.pipe(fs.createWriteStream("app/src/js/lib/ipfs-api.js")).on("error", (err) => {
-				console.error(err);
-			});
-		});
-	});
-});
 
-http.get("http://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js", response => {
-	response.pipe(fs.createWriteStream("app/src/js/lib/web3.min.js")).on("error", (err) => {
-		console.error(err);
-	});
-});
+simpleLibUpdate("http://cdn.jsdelivr.net/npm/vue", "app/src/js/lib", "vue.min.js");
+unpkgLibUpdate("http://unpkg.com/vue-router/dist/vue-router.js", "app/src/js/lib", "vue-router.js");
+
+unpkgLibUpdate("http://unpkg.com/ipfs-api/dist/index.js", "app/src/js/lib", "ipfs-api.js");
+simpleLibUpdate("http://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js", "app/src/js/lib", "web3.min.js");
 
 fs.copyFileSync("node_modules/jquery/dist/jquery.min.js", "app/src/js/lib/jquery.min.js");
+fs.copyFileSync("node_modules/pug/runtime.js", "app/src/js/lib/pug.js");
 
 console.log("Genversion");
 gv.check("lib/version.js", (err, doesExist, isByGenversion) => {
@@ -88,11 +110,8 @@ files.forEach(file => {
 	let outPathP = path.parse(outPath);
 
 	let grandParent = path.parse(outPathP.dir).dir;
-	if (!fs.existsSync(grandParent)) {
-		fs.mkdirSync(grandParent);
-	}
 	if (!fs.existsSync(outPathP.dir)) {
-		fs.mkdirSync(outPathP.dir);
+		mkdirs(outPathP.dir);
 	}
 
 	if (file.match(".*\\.pug")) {
@@ -124,3 +143,4 @@ exports.src = src;
 exports.walkSync = walkSync;
 exports.repoSlug = repoSlug;
 exports.repoPath = repoPath;
+exports.mkdirs = mkdirs;

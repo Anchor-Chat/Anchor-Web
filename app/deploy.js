@@ -122,7 +122,7 @@ function pub(ipfs, hash, key, callback) {
 	console.log("Publishing the IPNS name...");
 
 	ipfs.swarm.peers((err, peerInfos) => {
-		console.log(peerInfos);
+		//console.log(peerInfos);
 
 		ipfs.name.publish(hash, { key: key.name }, (err, name) => {
 			if (err) {
@@ -130,6 +130,8 @@ function pub(ipfs, hash, key, callback) {
 			} else {
 				console.log("The published IPNS name is: "+name.name);
 				console.log("and it resolves to: "+name.value);
+				console.log("Public ipns url: https://gateway.ipfs.io/ipns/"+name.name);
+				console.log("Public ipfs url: https://gateway.ipfs.io"+name.value);
 			}
 			callback();
 		});	

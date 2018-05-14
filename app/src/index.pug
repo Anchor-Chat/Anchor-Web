@@ -5,31 +5,44 @@ html(lang='en')
 		title Decentracord
 		meta(name='description', content='Decentracord - an app just like discord but living entirely on the IPFS network and the Ethereum blockchain')
 		meta(name='author', content='lukas2005')
-		link(rel='stylesheet', href='css/materialize.min.css')
+		link(rel='stylesheet', href='lib/bootstrap/css/bootstrap.min.css')
+		link(rel='stylesheet', href='lib/materialize/materialize.min.css')
 		link(rel='stylesheet', href='fonts/junction/junction.css')
+		link(rel='stylesheet', href='fonts/material-icons/style.css')
 		link(rel='stylesheet', href='css/styles.css')
 		!= "<!--[if lt IE 9]>"
-		!= '<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>'
+		!= '<script src="js/lib/html5shiv.js"></script>'
 		!= "<![endif]-->"
+
+		meta(name="viewport" content="width=device-width, initial-scale=1")
 	body
-		.guilds-wrapper
-			.scroller-wrap
-				.guilds.scroller
-					.guild
-						.guild-inner(draggable="false", style="border-radius: 25px; background-color: rgb(47, 49, 54);")
-							a(href="")
-								.friends-icon
-					.friends-online 7 online
-					.dms
-					.guild-separator
-					.guild
+
+		#app
+			.guilds
+				.scroller
+					.guild(id="0")
+						a.overflow.waves-effect.waves-light(draggable="false", href="/guilds/0")
+							i.material-icons people
+					.separator.friends-online
+						span {{ friendsOnline }} online
+					.guild(v-for="guild in guilds", :id="guild.id", draggable="true")
+						a.waves-effect.waves-light(draggable="false", :href="'/guilds/'+guild.id")
+							img(v-if="guild.id !== 0", :src="guild.img")
+
+		sidebar.col-2
+
+		main.col-6
 
 		// Libs
-		script(src="js/lib/web3.min.js")
+		script(src="js/lib/vue.min.js")
+		script(src="js/lib/vue-router.js")
+		script(src="lib/materialize/materialize.min.js")
+		script(src="lib/bootstrap/js/bootstrap.bundle.min.js")
 		script(src="js/lib/web3.min.js")
 		script(src="js/lib/ipfs-api.js")
-		script(src="js/lib/materialize.min.js")
 		script(src="js/lib/jquery.min.js")
+		script(src="js/lib/pug.js")
+
 
 		// My js
 		script(src="js/contracts/Storage.js")

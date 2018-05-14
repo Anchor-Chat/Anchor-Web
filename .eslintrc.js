@@ -33,6 +33,7 @@ module.exports = {
         "Web3": false,
         "web3": true,
         "artifacts": false,
-        "Decentracord": false
+        "Decentracord": false,
+        "Vue": false
     }
 };

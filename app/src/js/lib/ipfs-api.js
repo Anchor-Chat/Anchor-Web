@@ -21517,7 +21517,7 @@ var hasSymbol = typeof Symbol === 'function'
 var makeSymbol
 if (hasSymbol) {
   makeSymbol = function (key) {
-    return Symbol.for(key)
+    return Symbol(key)
   }
 } else {
   makeSymbol = function (key) {
@@ -43127,7 +43127,7 @@ var rStates = exports.readyStates = {
 	DONE: 4
 }
 
-var IncomingMessage = exports.IncomingMessage = function (xhr, response, mode) {
+var IncomingMessage = exports.IncomingMessage = function (xhr, response, mode, fetchTimer) {
 	var self = this
 	stream.Readable.call(self)
 
@@ -43162,7 +43162,7 @@ var IncomingMessage = exports.IncomingMessage = function (xhr, response, mode) {
 				write: function (chunk) {
 					return new Promise(function (resolve, reject) {
 						if (self._destroyed) {
-							return
+							reject()
 						} else if(self.push(new Buffer(chunk))) {
 							resolve()
 						} else {
@@ -43171,6 +43171,7 @@ var IncomingMessage = exports.IncomingMessage = function (xhr, response, mode) {
 					})
 				},
 				close: function () {
+					global.clearTimeout(fetchTimer)
 					if (!self._destroyed)
 						self.push(null)
 				},
@@ -43181,7 +43182,11 @@ var IncomingMessage = exports.IncomingMessage = function (xhr, response, mode) {
 			})
 
 			try {
-				response.body.pipeTo(writable)
+				response.body.pipeTo(writable).catch(function (err) {
+					global.clearTimeout(fetchTimer)
+					if (!self._destroyed)
+						self.emit('error', err)
+				})
 				return
 			} catch (e) {} // pipeTo method isn't defined. Can't find a better way to feature test this
 		}
@@ -43192,12 +43197,14 @@ var IncomingMessage = exports.IncomingMessage = function (xhr, response, mode) {
 				if (self._destroyed)
 					return
 				if (result.done) {
+					global.clearTimeout(fetchTimer)
 					self.push(null)
 					return
 				}
 				self.push(new Buffer(result.value))
 				read()
-			}).catch(function(err) {
+			}).catch(function (err) {
+				global.clearTimeout(fetchTimer)
 				if (!self._destroyed)
 					self.emit('error', err)
 			})
@@ -90839,7 +90846,7 @@ function typeOf (link) {
 /* 345 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"ipfs-api","version":"20.2.0","description":"A client library for the IPFS HTTP API","main":"src/index.js","browser":{"glob":false,"fs":false,"stream":"readable-stream","http":"stream-http","ipfs-api":false,"ipfs":false},"scripts":{"test":"aegir test","test:node":"aegir test -t node","test:browser":"aegir test -t browser","test:webworker":"aegir test -t webworker","lint":"aegir lint","build":"aegir build","release":"aegir release ","release-minor":"aegir release --type minor ","release-major":"aegir release --type major ","coverage":"aegir coverage --timeout 100000","coverage-publish":"aegir coverage --provider coveralls --timeout 100000"},"dependencies":{"async":"^2.6.0","big.js":"^5.0.3","bs58":"^4.0.1","cids":"~0.5.3","concat-stream":"^1.6.2","detect-node":"^2.0.3","flatmap":"0.0.3","glob":"^7.1.2","ipfs-block":"~0.7.1","ipfs-unixfs":"~0.1.14","ipld-dag-cbor":"~0.12.0","ipld-dag-pb":"~0.14.4","is-ipfs":"~0.3.2","is-pull-stream":"0.0.0","is-stream":"^1.1.0","libp2p-crypto":"^0.13.0","lru-cache":"^4.1.2","multiaddr":"^5.0.0","multibase":"~0.4.0","multihashes":"~0.4.13","ndjson":"^1.5.0","once":"^1.4.0","peer-id":"~0.10.7","peer-info":"~0.14.1","promisify-es6":"^1.0.3","pull-defer":"^0.2.2","pull-pushable":"^2.2.0","pull-stream-to-stream":"^1.3.4","pump":"^3.0.0","qs":"^6.5.2","readable-stream":"^2.3.6","stream-http":"^2.8.1","stream-to-pull-stream":"^1.7.2","streamifier":"^0.1.1","tar-stream":"^1.6.0"},"engines":{"node":">=6.0.0","npm":">=3.0.0"},"repository":{"type":"git","url":"https://github.com/ipfs/js-ipfs-api"},"devDependencies":{"aegir":"^13.1.0","browser-process-platform":"^0.1.1","chai":"^4.1.2","cross-env":"^5.1.4","dirty-chai":"^2.0.1","eslint-plugin-react":"^7.7.0","go-ipfs-dep":"^0.4.14","gulp":"^3.9.1","interface-ipfs-core":"~0.64.3","ipfs":"~0.28.2","ipfsd-ctl":"~0.33.1","pull-stream":"^3.6.7","socket.io":"^2.1.0","socket.io-client":"^2.1.0","stream-equal":"^1.1.1"},"pre-push":["lint","test"],"keywords":["ipfs"],"author":"Matt Bell <mappum@gmail.com>","contributors":["Alan Shaw <alan@tableflip.io>","Alex Mingoia <talk@alexmingoia.com>","Antonio Tenorio-Fornés <antoniotenorio@ucm.es>","Bruno Barbieri <bbarbieri@delivery.com>","Clemo <flipflopsimsommer@users.noreply.github.com>","Connor Keenan <ckeenan89@gmail.com>","Danny <dannyid@protonmail.com>","David Braun <David.Braun@Toptal.com>","David Dias <daviddias.p@gmail.com>","Diogo Silva <fsdiogo@gmail.com>","Dmitriy Ryajov <dryajov@gmail.com>","Donatas Stundys <donatas.stundys@necolt.com>","Fil <fil@rezo.net>","Francisco Baio Dias <xicombd@gmail.com>","Friedel Ziegelmayer <dignifiedquire@gmail.com>","Gavin McDermott <gavinmcdermott@gmail.com>","Greenkeeper <support@greenkeeper.io>","Haad <haadcode@users.noreply.github.com>","Harlan T Wood <harlantwood@users.noreply.github.com>","Harlan T Wood <code@harlantwood.net>","Henrique Dias <hacdias@gmail.com>","Holodisc <holodiscent@gmail.com>","Jacob Heun <jacobheun@gmail.com>","James Halliday <substack@gmail.com>","Jason Carver <jacarver@linkedin.com>","Jason Papakostas <vith@users.noreply.github.com>","Jeff Downie <JeffDownie@users.noreply.github.com>","Jeromy <why@ipfs.io>","Jeromy <jeromyj@gmail.com>","Joe Turgeon <arithmetric@gmail.com>","Jonathan <jkrone@vt.edu>","João Antunes <j.goncalo.antunes@gmail.com>","Juan Batiz-Benet <juan@benet.ai>","Kevin Wang <kevin@fossa.io>","Kristoffer Ström <kristoffer@rymdkoloni.se>","Matt Bell <mappum@gmail.com>","Maxime Lathuilière <k@maxlath.eu>","Michael Muré <batolettre@gmail.com>","Mitar <mitar.git@tnode.com>","Mithgol <getgit@mithgol.ru>","Nuno Nogueira <nunofmn@gmail.com>","Oli Evans <oli@tableflip.io>","Pedro Teixeira <i@pgte.me>","Pete Thomas <pete@xminusone.net>","Richard Littauer <richard.littauer@gmail.com>","Richard Schneider <makaretu@gmail.com>","Stephen Whitmore <stephen.whitmore@gmail.com>","Tara Vancil <tbvanc@gmail.com>","Travis Person <travis.person@gmail.com>","Vasco Santos <vasco.santos@ua.pt>","Vasco Santos <vasco.santos@moxy.studio>","Victor Bjelkholm <victor@typeform.com>","Volker Mische <volker.mische@gmail.com>","achingbrain <alex@achingbrain.net>","dmitriy ryajov <dryajov@dmitriys-MacBook-Pro.local>","elsehow <yes@cosmopol.is>","ethers <ethereum@outlook.com>","haad <haad@headbanggames.com>","kumavis <kumavis@users.noreply.github.com>","nginnever <ginneversource@gmail.com>","noah the goodra <peterpan0413@live.com>","priecint <tp-dev@seznam.cz>","samuli <samuli@nugg.ad>","victorbjelkholm <victorbjelkholm@gmail.com>","Łukasz Magiera <magik6k@gmail.com>","Łukasz Magiera <magik6k@users.noreply.github.com>"],"license":"MIT","bugs":{"url":"https://github.com/ipfs/js-ipfs-api/issues"},"homepage":"https://github.com/ipfs/js-ipfs-api"}
+module.exports = {"name":"ipfs-api","version":"20.2.1","description":"A client library for the IPFS HTTP API","leadMaintainer":"Alan Shaw <alan@tableflip.io>","main":"src/index.js","browser":{"glob":false,"fs":false,"stream":"readable-stream","http":"stream-http","ipfs-api":false,"ipfs":false},"scripts":{"test":"aegir test","test:node":"aegir test -t node","test:browser":"aegir test -t browser","test:webworker":"aegir test -t webworker","lint":"aegir lint","build":"aegir build","release":"aegir release ","release-minor":"aegir release --type minor ","release-major":"aegir release --type major ","coverage":"aegir coverage --timeout 100000","coverage-publish":"aegir coverage --provider coveralls --timeout 100000"},"dependencies":{"async":"^2.6.0","big.js":"^5.0.3","bs58":"^4.0.1","cids":"~0.5.3","concat-stream":"^1.6.2","detect-node":"^2.0.3","flatmap":"0.0.3","glob":"^7.1.2","ipfs-block":"~0.7.1","ipfs-unixfs":"~0.1.14","ipld-dag-cbor":"~0.12.0","ipld-dag-pb":"~0.14.4","is-ipfs":"~0.3.2","is-pull-stream":"0.0.0","is-stream":"^1.1.0","libp2p-crypto":"^0.13.0","lru-cache":"^4.1.3","multiaddr":"^5.0.0","multibase":"~0.4.0","multihashes":"~0.4.13","ndjson":"^1.5.0","once":"^1.4.0","peer-id":"~0.10.7","peer-info":"~0.14.1","promisify-es6":"^1.0.3","pull-defer":"^0.2.2","pull-pushable":"^2.2.0","pull-stream-to-stream":"^1.3.4","pump":"^3.0.0","qs":"^6.5.2","readable-stream":"^2.3.6","stream-http":"^2.8.2","stream-to-pull-stream":"^1.7.2","streamifier":"^0.1.1","tar-stream":"^1.6.0"},"engines":{"node":">=6.0.0","npm":">=3.0.0"},"repository":{"type":"git","url":"https://github.com/ipfs/js-ipfs-api"},"devDependencies":{"aegir":"^13.1.0","browser-process-platform":"^0.1.1","chai":"^4.1.2","cross-env":"^5.1.5","dirty-chai":"^2.0.1","eslint-plugin-react":"^7.8.1","go-ipfs-dep":"^0.4.14","gulp":"^3.9.1","interface-ipfs-core":"~0.65.5","ipfs":"~0.28.2","ipfsd-ctl":"~0.33.2","pull-stream":"^3.6.8","socket.io":"^2.1.0","socket.io-client":"^2.1.0","stream-equal":"^1.1.1"},"pre-push":["lint","test"],"keywords":["ipfs"],"contributors":["Alan Shaw <alan@tableflip.io>","Alex Mingoia <talk@alexmingoia.com>","Antonio Tenorio-Fornés <antoniotenorio@ucm.es>","Bruno Barbieri <bbarbieri@delivery.com>","Clemo <flipflopsimsommer@users.noreply.github.com>","Connor Keenan <ckeenan89@gmail.com>","Danny <dannyid@protonmail.com>","David Braun <David.Braun@Toptal.com>","David Dias <daviddias.p@gmail.com>","Diogo Silva <fsdiogo@gmail.com>","Dmitriy Ryajov <dryajov@gmail.com>","Donatas Stundys <donatas.stundys@necolt.com>","Fil <fil@rezo.net>","Francisco Baio Dias <xicombd@gmail.com>","Friedel Ziegelmayer <dignifiedquire@gmail.com>","Gavin McDermott <gavinmcdermott@gmail.com>","Greenkeeper <support@greenkeeper.io>","Haad <haadcode@users.noreply.github.com>","Harlan T Wood <harlantwood@users.noreply.github.com>","Harlan T Wood <code@harlantwood.net>","Henrique Dias <hacdias@gmail.com>","Holodisc <holodiscent@gmail.com>","Jacob Heun <jacobheun@gmail.com>","James Halliday <substack@gmail.com>","Jason Carver <jacarver@linkedin.com>","Jason Papakostas <vith@users.noreply.github.com>","Jeff Downie <JeffDownie@users.noreply.github.com>","Jeromy <why@ipfs.io>","Jeromy <jeromyj@gmail.com>","Joe Turgeon <arithmetric@gmail.com>","Jonathan <jkrone@vt.edu>","João Antunes <j.goncalo.antunes@gmail.com>","Juan Batiz-Benet <juan@benet.ai>","Kevin Wang <kevin@fossa.io>","Kristoffer Ström <kristoffer@rymdkoloni.se>","Matt Bell <mappum@gmail.com>","Maxime Lathuilière <k@maxlath.eu>","Michael Muré <batolettre@gmail.com>","Mitar <mitar.git@tnode.com>","Mithgol <getgit@mithgol.ru>","Nuno Nogueira <nunofmn@gmail.com>","Oli Evans <oli@tableflip.io>","Pedro Teixeira <i@pgte.me>","Pete Thomas <pete@xminusone.net>","Richard Littauer <richard.littauer@gmail.com>","Richard Schneider <makaretu@gmail.com>","Stephen Whitmore <stephen.whitmore@gmail.com>","Tara Vancil <tbvanc@gmail.com>","Travis Person <travis.person@gmail.com>","Vasco Santos <vasco.santos@ua.pt>","Vasco Santos <vasco.santos@moxy.studio>","Victor Bjelkholm <victor@typeform.com>","Volker Mische <volker.mische@gmail.com>","achingbrain <alex@achingbrain.net>","dmitriy ryajov <dryajov@dmitriys-MacBook-Pro.local>","elsehow <yes@cosmopol.is>","ethers <ethereum@outlook.com>","haad <haad@headbanggames.com>","kumavis <kumavis@users.noreply.github.com>","nginnever <ginneversource@gmail.com>","noah the goodra <peterpan0413@live.com>","priecint <tp-dev@seznam.cz>","samuli <samuli@nugg.ad>","victorbjelkholm <victorbjelkholm@gmail.com>","Łukasz Magiera <magik6k@gmail.com>","Łukasz Magiera <magik6k@users.noreply.github.com>"],"license":"MIT","bugs":{"url":"https://github.com/ipfs/js-ipfs-api/issues"},"homepage":"https://github.com/ipfs/js-ipfs-api"}
 
 /***/ }),
 /* 346 */
@@ -91513,6 +91520,7 @@ var ClientRequest = module.exports = function (opts) {
 		throw new Error('Invalid value for opts.mode')
 	}
 	self._mode = decideMode(preferBinary, useFetch)
+	self._fetchTimer = null
 
 	self.on('finish', function () {
 		self._onFinish()
@@ -91588,13 +91596,14 @@ ClientRequest.prototype._onFinish = function () {
 
 	if (self._mode === 'fetch') {
 		var signal = null
+		var fetchTimer = null
 		if (capability.abortController) {
 			var controller = new AbortController()
 			signal = controller.signal
 			self._fetchAbortController = controller
 
 			if ('requestTimeout' in opts && opts.requestTimeout !== 0) {
-				global.setTimeout(function () {
+				self._fetchTimer = global.setTimeout(function () {
 					self.emit('requestTimeout')
 					if (self._fetchAbortController)
 						self._fetchAbortController.abort()
@@ -91613,7 +91622,9 @@ ClientRequest.prototype._onFinish = function () {
 			self._fetchResponse = response
 			self._connect()
 		}, function (reason) {
-			self.emit('error', reason)
+			global.clearTimeout(self._fetchTimer)
+			if (!self._destroyed)
+				self.emit('error', reason)
 		})
 	} else {
 		var xhr = self._xhr = new global.XMLHttpRequest()
@@ -91713,7 +91724,7 @@ ClientRequest.prototype._connect = function () {
 	if (self._destroyed)
 		return
 
-	self._response = new IncomingMessage(self._xhr, self._fetchResponse, self._mode)
+	self._response = new IncomingMessage(self._xhr, self._fetchResponse, self._mode, self._fetchTimer)
 	self._response.on('error', function(err) {
 		self.emit('error', err)
 	})
@@ -91731,6 +91742,7 @@ ClientRequest.prototype._write = function (chunk, encoding, cb) {
 ClientRequest.prototype.abort = ClientRequest.prototype.destroy = function () {
 	var self = this
 	self._destroyed = true
+	global.clearTimeout(self._fetchTimer)
 	if (self._response)
 		self._response._destroyed = true
 	if (self._xhr)
@@ -119050,7 +119062,7 @@ module.exports = (send) => {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(Buffer) {
+/* WEBPACK VAR INJECTION */(function(process, Buffer) {
 
 const promisify = __webpack_require__(1)
 const EventEmitter = __webpack_require__(63)
@@ -119071,14 +119083,13 @@ module.exports = (arg) => {
   const subscriptions = {}
   ps.id = Math.random()
   return {
-    subscribe: (topic, options, handler, callback) => {
+    subscribe: (topic, handler, options, callback) => {
       const defaultOptions = {
         discover: false
       }
 
       if (typeof options === 'function') {
-        callback = handler
-        handler = options
+        callback = options
         options = defaultOptions
       }
 
@@ -119091,14 +119102,15 @@ module.exports = (arg) => {
         if (!callback) {
           return Promise.reject(NotSupportedError())
         }
-        return callback(NotSupportedError())
+
+        return process.nextTick(() => callback(NotSupportedError()))
       }
 
       // promisify doesn't work as we always pass a
       // function as last argument (`handler`)
       if (!callback) {
         return new Promise((resolve, reject) => {
-          subscribe(topic, options, handler, (err) => {
+          subscribe(topic, handler, options, (err) => {
             if (err) {
               return reject(err)
             }
@@ -119107,24 +119119,40 @@ module.exports = (arg) => {
         })
       }
 
-      subscribe(topic, options, handler, callback)
+      subscribe(topic, handler, options, callback)
     },
-    unsubscribe: (topic, handler) => {
+    unsubscribe: (topic, handler, callback) => {
       if (!isNode) {
-        throw NotSupportedError()
+        if (!callback) {
+          return Promise.reject(NotSupportedError())
+        }
+
+        return process.nextTick(() => callback(NotSupportedError()))
       }
 
       if (ps.listenerCount(topic) === 0 || !subscriptions[topic]) {
-        throw new Error(`Not subscribed to '${topic}'`)
+        const err = new Error(`Not subscribed to '${topic}'`)
+
+        if (!callback) {
+          return Promise.reject(err)
+        }
+
+        return process.nextTick(() => callback(err))
       }
 
       ps.removeListener(topic, handler)
 
-      // Drop the request once we are actualy done
+      // Drop the request once we are actually done
       if (ps.listenerCount(topic) === 0) {
         subscriptions[topic].abort()
         subscriptions[topic] = null
       }
+
+      if (!callback) {
+        return Promise.resolve()
+      }
+
+      process.nextTick(() => callback())
     },
     publish: promisify((topic, data, callback) => {
       if (!isNode) {
@@ -119170,7 +119198,7 @@ module.exports = (arg) => {
     }
   }
 
-  function subscribe (topic, options, handler, callback) {
+  function subscribe (topic, handler, options, callback) {
     ps.on(topic, handler)
 
     if (subscriptions[topic]) {
@@ -119218,7 +119246,7 @@ module.exports = (arg) => {
   }
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(0).Buffer))
 
 /***/ }),
 /* 556 */

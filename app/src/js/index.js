@@ -79,6 +79,21 @@ let ipfs = IpfsApi("localhost", 5001);
 let storage;
 let decentracord;
 
+let vue = new Vue({
+	el: "#app",
+	data: {
+		guilds: [
+			{
+				id: 1,
+				name: "N-O-D-E Community",
+				img: "https://cdn.discordapp.com/icons/438687916026232842/18c1e0ed2eda1b3e88a0515e28b3b50f.png"
+			}
+		],
+		friendsOnline: 10
+	}
+});
+Vue.config.devtools = true;
+
 web3Setup();
 
 function main() {
@@ -86,7 +101,7 @@ function main() {
 	// console.log(storage.getAddress(Decentracord.Hash));
 	// decentracord = Decentracord(web3);
 	// console.log(decentracord.createServer("lukas2005's Device Mod Apps"));
-	showDialog("Hello", () => {
-		console.log("Yay");
-	});
+	// showDialog("Hello", () => {
+	// 	console.log("Yay");
+	// });
 }
