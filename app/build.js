@@ -87,7 +87,7 @@ unpkgLibUpdate("http://unpkg.com/ipfs-api/dist/index.js", "app/src/js/lib", "ipf
 simpleLibUpdate("http://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js", "app/src/js/lib", "web3.min.js");
 
 fs.copyFileSync("node_modules/jquery/dist/jquery.min.js", "app/src/js/lib/jquery.min.js");
-fs.copyFileSync("node_modules/pug/runtime.js", "app/src/js/lib/pug.js");
+//fs.copyFileSync("node_modules/pug/runtime.js", "app/src/js/lib/pug.js");
 
 console.log("Genversion");
 gv.check("lib/version.js", (err, doesExist, isByGenversion) => {
@@ -114,7 +114,23 @@ files.forEach(file => {
 		mkdirs(outPathP.dir);
 	}
 
-	if (file.match(".*\\.pug")) {
+	if (file.match(".*components\\\\.*\\\\.*\\.pug")) {
+		outPath+=".js";
+		console.log("Compiling "+file);
+
+		let js = pug.compileClient("span lol", {
+			name: inPath.dir.substring(16, inPath.dir.lastIndexOf(path.sep)-1)
+		});
+
+		console.log(eval(js));
+
+		console.log("Writing to "+outPath);
+		fs.readFile(path.join(inPath.dir, inPath.name+".base.js"), (err, data) => {
+			let text = js+"\n\n"+data.toString();
+			fs.writeFileSync(outPath, text);
+			fs.unlinkSync(path.join(outPathP.dir, inPath.name+".base.js"));
+		});
+	} else if (file.match(".*\\.pug")) {
 		outPath+=".html";
 		console.log("Rendering "+file);
 		let html = pug.renderFile(file);
