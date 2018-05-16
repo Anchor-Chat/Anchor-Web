@@ -2,18 +2,16 @@
   "name": "decentracord-web",
   "version": "1.0.0",
   "description": "An app like discord just decentralized! - Web",
-  "main": "app/httpServer.js",
+  "main": "scripts/httpServer.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "start": "nodemon -w \"./app/src/ ./app/httpServer.js\"",
-    "test": "truffle test",
-    "testnet": "truffle.cmd migrate --network dev",
-    "live": "truffle.cmd migrate --network live",
-    "deploy": "node ./app/deploy.js",
-    "build": "node ./app/build.js",
-    "genversion": "genversion app/version.js"
+    "start": "nodemon -w \"/src/ /scripts/httpServer.js\"",
+    "test": "exit 0",
+    "deploy": "node ./scripts/deploy.js",
+    "build": "node ./scripts/build.js",
+    "genversion": "genversion lib/version.js"
   },
   "repository": {
     "type": "git",
@@ -33,12 +31,9 @@
     "express-pug-static": "^0.1.0",
     "genversion": "^2.1.0",
     "go-ipfs-dep": "^0.4.14",
-    "ipfs-api-utils": "github:Decentracord/js-ipfs-api-utils",
     "ipfsd-ctl": "^0.32.1",
     "jquery": "^3.3.1",
-    "pug": "^2.0.3",
-    "truffle": "^4.1.8",
-    "web3": "^0.14.0"
+    "pug": "^2.0.3"
   },
   "dependencies": {}
 }
