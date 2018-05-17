@@ -1,3 +1,18 @@
+import "./scss/style.scss";
+import "bootstrap";
+import "materialize-css";
+import "html5shiv";
+import "jquery";
+import "ipfs-api";
+import "vue";
+import "vue-router";
+
+import GuildView from "./components/guild-view.vue";
+
+function requireAll (r) { r.keys().forEach(r); }
+
+requireAll(require.context("./", true, /\.pug$/));
+
 function web3Setup() {
 	if (typeof web3 !== "undefined") {
 		web3 = new Web3(web3.currentProvider);
