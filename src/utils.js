@@ -1,13 +1,13 @@
-export default class {
-	checkConnection(callback) {
+export default {
+	checkConnection: callback => {
 		if (!web3.isConnected()) {
 			callback(false);
 		} else {
 			callback(true);
 		}
-	}
+	},
 
-	web3Setup(callback) {
+	web3Setup: callback => {
 		if (typeof web3 !== "undefined") {
 			web3 = new Web3(web3.currentProvider);
 		} else {
@@ -18,10 +18,9 @@ export default class {
 			}
 		}
 		this.checkConnection(callback);
-	}
+	},
 
-	
-	showDialog(html, onYes, onNo) {
+	showDialog: (html, onYes, onNo) => {
 		let body = $("body");
 		let dialog = $("<div id=\"dialog\"></div>");
 		let content = $("<p></p>").html(html);
@@ -74,4 +73,4 @@ export default class {
 		body.append(dialog);
 	}
 
-}
+};

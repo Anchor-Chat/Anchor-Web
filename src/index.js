@@ -1,6 +1,7 @@
 import "bootstrap";
 import "materialize-css";
 import "jquery";
+import "./lib/web3.min.js";
 
 import Vue from "vue";
 import "vue-router";
