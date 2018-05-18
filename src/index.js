@@ -16,9 +16,7 @@ import Utils from "./utils.js";
 Vue.component("guilds-scroller", GuildsScroller);
 let vue = new Vue({
 	el: "#app",
-	data: {
-
-	}
+	data: {}
 });
 Vue.config.devtools = true;
 
