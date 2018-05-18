@@ -1,5 +1,7 @@
+@import "../../scss/vars.scss";
+
 .guilds {
-    background-color: #6d6d6d;
+    background-color: $p-light;
     height: 949px;
     width: 70px;
     overflow: hidden;

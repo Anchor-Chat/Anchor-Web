@@ -1,7 +1,10 @@
 @import "./_custom.scss";
 @import "~bootstrap/scss/bootstrap";
+
+@import "./vars.scss";
+
 body {
-    background-color: #424242;
+    background-color: $primary-color;
     color: white;
     font-family: 'Junction';
     -moz-user-select: none;
@@ -20,7 +23,7 @@ body {
     -webkit-border-radius: 1%;
     width: 520px;
     height: 420px;
-    background-color: #1b1b1b;
+    background-color: $p-dark;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -54,11 +57,11 @@ body {
     left: 0;
     right: 0;
     margin: auto;
-    background-color: #424242;
+    background-color: $primary-color;
 }
 
 .button {
-    background-color: #424242 !important;
+    background-color: $primary-color !important;
 }
 
 .overflow {
