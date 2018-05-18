@@ -139,4 +139,4 @@ $RECYCLE.BIN/
 
 # Custom
 *.html
-/build
+/dist

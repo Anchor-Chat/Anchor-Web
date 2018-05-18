@@ -2,46 +2,14 @@ doctype html
 html(lang='en')
 	head
 		meta(charset='utf-8')
-		title Decentracord
-		meta(name='description', content='Decentracord - an app just like discord but living entirely on the IPFS network and the Ethereum blockchain')
+		meta(name='description', content='Anchor - an app just like discord but living entirely on the IPFS network and the Ethereum blockchain')
 		meta(name='author', content='lukas2005')
-		link(rel='stylesheet', href='fonts/junction/junction.css')
-		link(rel='stylesheet', href='fonts/material-icons/style.css')
-		link(rel='stylesheet', href='css/styles.css')
-		!= "<!--[if lt IE 9]>"
-		!= '<script src="js/lib/html5shiv.js"></script>'
-		!= "<![endif]-->"
+		meta(name='viewport', content='width=device-width, initial-scale=1')
 
-		meta(name="viewport" content="width=device-width, initial-scale=1")
+		title Anchor
 	body
-
 		#app
-			.guilds
-				.scroller
-					.guild(id="0", data-toggle="tooltip" data-placement="right", title="Private messages")
-						a.overflow.waves-effect.waves-light(draggable="false", href="/guilds/0")
-							i.material-icons chat
-					.separator.friends-online
-						span {{ friendsOnline }} online
-					.guild(v-for="guild in guilds", :id="guild.id", draggable="true", data-toggle="tooltip" data-placement="right", :title="guild.name")
-						a.waves-effect.waves-light(draggable="false", :href="'/guilds/'+guild.id")
-							img(v-if="guild.id !== 0", :src="guild.img")
-
-		sidebar.col-2
-
-		main.col-6
-
-		// Libs
-		//- script(src="js/lib/vue.min.js")
-		//- script(src="js/lib/vue-router.js")
-		//- script(src="lib/materialize/materialize.min.js")
-		//- script(src="lib/bootstrap/js/bootstrap.bundle.min.js")
-		//- script(src="js/lib/web3.min.js")
-		//- script(src="js/lib/ipfs-api.js")
-		//- script(src="js/lib/jquery.min.js")
-		script(src="bundle.js")
-
-		// My js
-		script(src="js/contracts/Storage.js")
-		script(src="js/contracts/Decentracord.js")
-		script(src="js/index.js")
+			sidebar
+				guilds-scroller
+			main.col-6
+		script(src='bundle.js')

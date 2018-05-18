@@ -1,12 +1,8 @@
-let opts = require("./build");
-
 const { spawnSync } = require("child_process");
 
 const path = require("path");
 const fs = require("fs");
-
-
-//const github = require("octonode");
+const os = require("os");
 
 const IPFSFactory = require("ipfsd-ctl");
 let ipfsd = IPFSFactory.create();
@@ -14,19 +10,18 @@ let ipfsNode;
 
 const ipfsApiUtils = require("ipfs-api-utils");
 
-let files = opts.walkSync(opts.out);
-
-//gh_deploy(files);
+const out = "./dist";
+const repoPath = path.join(os.homedir(), ".ipfs");
 
 console.log("Deploying to IPFS");
 console.log("Starting an IPFS node");
-ipfsd.spawn({disposable: false, repoPath: opts.repoPath}, (err, ipfsNodee) => {
+ipfsd.spawn({disposable: false, repoPath: repoPath}, (err, ipfsNodee) => {
 	if (err) throw err;
 
 	ipfsNode = ipfsNodee;
 	console.log("Starting the IPFS daemon");
 
-	isIPFSInitialized(opts.repoPath, (callback) => {
+	isIPFSInitialized(repoPath, (callback) => {
 		ipfsNode.init((err) => {
 			if (err) throw err;
 			callback();
@@ -35,12 +30,12 @@ ipfsd.spawn({disposable: false, repoPath: opts.repoPath}, (err, ipfsNodee) => {
 
 		ipfsNode.start((err, ipfs) => {
 			if (err) throw err;
-			ipfsApiUtils(ipfs, opts.repoPath);
+			ipfsApiUtils(ipfs, repoPath);
 
 			console.log("The daemon is up and running!");
 			console.log("Adding files to IPFS...");
 	
-			let add = spawnSync("node_modules/go-ipfs-dep/go-ipfs/ipfs", ["add", "-r", opts.out]);
+			let add = spawnSync("node_modules/go-ipfs-dep/go-ipfs/ipfs", ["add", "-r", out]);
 	
 			let stdout = add.stdout.toString();
 			stdout = stdout.substring(0, stdout.lastIndexOf("\n"));
@@ -121,50 +116,25 @@ function publishIPNS(ipfs, hash, callback) {
 function pub(ipfs, hash, key, callback) {
 	console.log("Publishing the IPNS name...");
 
-	ipfs.swarm.peers((err, peerInfos) => {
-		//console.log(peerInfos);
+	setTimeout(() => {
+		ipfs.swarm.peers((err, peerInfos) => {
+			//console.log(peerInfos);
+	
+			ipfs.name.publish(hash, { key: key.name }, (err, name) => {
+				if (err) {
+					console.error(err);
+				} else {
+					console.log("The published IPNS name is: "+name.name);
+					console.log("and it resolves to: "+name.value);
+					console.log("Public ipns url: https://gateway.ipfs.io/ipns/"+name.name);
+					console.log("Public ipfs url: https://gateway.ipfs.io"+name.value);
+				}
+				callback();
+			});	
+		});
+	}, 1000);
 
-		ipfs.name.publish(hash, { key: key.name }, (err, name) => {
-			if (err) {
-				console.error(err);
-			} else {
-				console.log("The published IPNS name is: "+name.name);
-				console.log("and it resolves to: "+name.value);
-				console.log("Public ipns url: https://gateway.ipfs.io/ipns/"+name.name);
-				console.log("Public ipfs url: https://gateway.ipfs.io"+name.value);
-			}
-			callback();
-		});	
-	});
 }
-
-// function gh_deploy(files) {
-// 	process.env.GH_TOKEN="";
-// 	if (process.env.GH_TOKEN) {
-// 		console.log("Deploying to Github");
-
-// 		let client = github.client(process.env.GH_TOKEN);
-
-// 		console.log("Compressing compiled web sources");
-// 		zip.add("build/web/web-compiled.7z", files)
-// 			.progress((f) => {
-// 				console.log("Compressing...");
-// 			})
-// 			.then(err => {
-// 				if (err) throw err;
-// 				let repo = client.repo(opts.repoSlug);
-		
-// 				repo.releases(rel => {
-// 					if (rel[0].tag_name == opts.version) {
-
-// 					} else {
-// 						repo.
-// 					}
-// 				});
-// 			}).catch((err) => { console.error(err); });
-
-// 	} 
-// }
 
 /**
  * 
