@@ -1,25 +1,5 @@
 export default {
-	checkConnection: callback => {
-		if (!web3.isConnected()) {
-			callback(false);
-		} else {
-			callback(true);
-		}
-	},
-
-	web3Setup: callback => {
-		if (typeof web3 !== "undefined") {
-			web3 = new Web3(web3.currentProvider);
-		} else {
-			// set the provider you want from Web3.providers
-			web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-			if (!web3.isConnected()) {
-				web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7777"));
-			}
-		}
-		this.checkConnection(callback);
-	},
-
+	
 	showDialog: (html, onYes, onNo) => {
 		let body = $("body");
 		let dialog = $("<div id=\"dialog\"></div>");

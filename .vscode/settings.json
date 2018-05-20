@@ -1,2 +1,15 @@
 {
+    "solidity.compileUsingRemoteVersion" : "latest",
+    "solidity.soliumRules": {
+        "imports-on-top": 0,
+        "variable-declarations": 0,
+        "indentation": [
+            "error",
+            "tab"
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ]
+    }
 }
