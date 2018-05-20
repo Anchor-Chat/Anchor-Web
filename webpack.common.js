@@ -1,7 +1,5 @@
 const path = require("path");
 
-const { DefinePlugin } = require("webpack");
-
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
@@ -21,15 +19,11 @@ module.exports = {
 			"dist"
 		]),
 		new VueLoaderPlugin(),
-		new FaviconsWebpackPlugin("./src/img/logo.png"),
-		new DefinePlugin({
-			"process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")
-		}),
+		new FaviconsWebpackPlugin("./src/img/logo.png")
 	],
 	resolve: {
 		alias: {
-			vue: "vue/dist/vue.js",
-			contracts: path.resolve("contracts")
+			vue: "vue/dist/vue.js"
 		}
 	},
 	module: {
@@ -37,15 +31,9 @@ module.exports = {
 			{
 				test: /\.js$/,
 				exclude: /(node_modules|bower_components)/,
-				use: ["babel-loader"]
-			},
-			// {
-			// 	test: /\.sol$/,
-			// 	use: ["web3-loader", "solc-loader"]
-			// },
-			{
-				test: /\.sol$/,
-				use: ["truffle-solidity-loader"]
+				use: {
+					loader: "babel-loader"
+				}
 			},
 			{
 				test: /\.css$/,
@@ -82,7 +70,7 @@ module.exports = {
 				use: [
 					"vue-loader"
 				]
-			}
+			},
 		]
 	}
 };
