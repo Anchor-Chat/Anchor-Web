@@ -1,24 +1,28 @@
 import "bootstrap";
 import "materialize-css";
 import "jquery";
+import Web3 from "web3";
 
 import Vue from "vue";
 import "vue-router";
 
-import GuildsScroller from "./components/guilds-scroller/index.vue";
+import GuildsScroller from "./vue/guilds-scroller/index.vue";
+import ChannelList from "./vue/channel-list/index.vue";
 
-import "./fonts/material-icons/style.css";
-import "./fonts/junction/junction.css";
+import "file-loader?name=[name].[ext]!./img/og-image.jpg";
+
 import "./scss/style.scss";
 
 import Utils from "./utils.js";
 
 Vue.component("guilds-scroller", GuildsScroller);
+Vue.component("channel-list", ChannelList);
+
 let vue = new Vue({
 	el: "#app",
 	data: {}
 });
-Vue.config.devtools = true;
+Vue.config.devtools = process.env.NODE_ENV === "development";
 
 function main() {
 	Utils.web3Setup((success) => {

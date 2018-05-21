@@ -1,15 +1,21 @@
-doctype html
-html(lang='en')
-	head
-		meta(charset='utf-8')
-		meta(name='description', content='Anchor - an app just like discord but living entirely on the IPFS network and the Ethereum blockchain')
-		meta(name='author', content='lukas2005')
-		meta(name='viewport', content='width=device-width, initial-scale=1')
+extends ~html-webpack-template-pug/layout.pug
 
-		title Anchor
-	body
-		#app
-			sidebar
-				guilds-scroller
-			main.col-6
-		script(src='bundle.js')
+block head
+	meta(charset='utf-8')
+	meta(name='description', content=htmlWebpackPlugin.options.description)
+	meta(name='author', content='lukas2005')
+
+	meta(property='og:image', content='/og-image.jpg')
+	meta(property='og:image:width', content='1799')
+	meta(property='og:image:height', content='942')
+	meta(property='og:title', content=htmlWebpackPlugin.options.title)
+	meta(property='og:description', content=htmlWebpackPlugin.options.description)
+	meta(property='og:url', content=htmlWebpackPlugin.options.url)
+
+block content
+	#app
+		guilds-scroller
+		.col-6
+			channel-list(serverName="Test")
+		div(style="clear: both;")
+	script(src="lib/web3.min.js")

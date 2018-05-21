@@ -1,0 +1,19 @@
+@import "../../scss/vars.scss";
+
+header {
+    width: 240px;
+    height: 45px;
+    background-color: $s-dark;
+    display: inline-block;
+    div {
+        text-align: center;
+        margin-top: 10px;
+        font-size: 2em;
+    }
+}
+
+#channel-list {
+    width: 240px;
+    height: 949px;
+    background-color: $s-light;
+}

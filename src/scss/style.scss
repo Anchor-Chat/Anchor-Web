@@ -1,5 +1,8 @@
 @import "./_custom.scss";
+
 @import "~bootstrap/scss/bootstrap";
+@import "../fonts/junction/junction.css";
+@import "../fonts/material-icons/style.css";
 
 @import "./vars.scss";
 
@@ -66,4 +69,12 @@ body {
 
 .overflow {
     overflow: visible;
+}
+
+#app .col-6 {
+    float: left;
+    padding: 0px !important;
+}
+#app aside {
+    float: left;
 }

@@ -1,6 +1,7 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const { DefinePlugin } = require("webpack");
 
 const merge = require("webpack-merge");
 const common = require("./webpack.common.js");
@@ -24,6 +25,9 @@ module.exports = merge(common, {
 			// both options are optional
 			filename: "[name].css",
 			chunkFilename: "[id].css"
+		}),
+		new DefinePlugin({
+			"process.env.NODE_ENV": "\"production\""
 		})
 	]
 });
