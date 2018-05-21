@@ -1,0 +1,11 @@
+<aside class="guilds">
+    <div class="scroller">
+        <div class="guild" id="0" data-toggle="tooltip" data-placement="right" title="Private messages">
+            <a class="overflow waves-effect waves-light" draggable="false" href="/guilds/0">
+                <i class="material-icons">chat</i>
+            </a>
+        </div>
+        <div class="separator friends-online"><span>{{ friendsOnline }} online</span></div>
+        <div class="guild" v-for="guild in guilds" :id="guild.id" draggable="true" data-toggle="tooltip" data-placement="right" :title="guild.name"><a class="waves-effect waves-light" draggable="false" :href="'/guilds/'+guild.id"><img v-if="guild.id !== 0" :src="guild.img"></a></div>
+    </div>
+</aside>
