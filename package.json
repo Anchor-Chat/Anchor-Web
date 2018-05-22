@@ -10,8 +10,8 @@
   "scripts": {
     "start": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "test": "exit 0",
-    "deploy": "npm run build && node ./scripts/deploy.js"
+    "deploy": "npm run build && node ./scripts/deploy.js",
+    "test": "exit 0"
   },
   "repository": {
     "type": "git",
