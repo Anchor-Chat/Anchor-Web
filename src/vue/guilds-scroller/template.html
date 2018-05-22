@@ -6,14 +6,10 @@
 			</router-link>
 		</div>
 		<div class="separator friends-online"><span>{{ friendsOnline }} online</span></div>
-		<div class="guild" v-for="guild in guilds" :id="guild.id" draggable="true" data-toggle="tooltip" data-placement="right" :title="guild.name">
-			<router-link class="waves-effect waves-light" draggable="false" :to="'/guild/'+guild.id">
-				<span v-if="hasImageUrl">
-					<img v-if="guild.id !== 0" :src="guild.img">
-				</span>
-				<span v-if="!hasImageUrl">
-					<i class="material-icons" v-if="guild.id !== 0">{{ guild.img }}</i>
-				</span>
+		<div class="guild" v-for="guild in guilds" :id="guild.id" data-toggle="tooltip" data-placement="right" :title="guild.name">
+			<router-link v-if="guild.id !== 0" class="waves-effect waves-light" draggable="false" :to="'/guild/'+guild.id">
+				<img v-if="hasImageUrl(guild)"      :src="guild.img">
+				<i   v-else class="material-icons" >{{ guild.img }}</i>
 			</router-link>
 		</div>
 	</div>

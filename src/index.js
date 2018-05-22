@@ -36,8 +36,13 @@ let vue = new Vue({
 			},
 			{
 				id: 20,
-				name: "Coding... People!!",
+				name: "Coding...",
 				img: "code"
+			},
+			{
+				id: 666,
+				name: "Cats",
+				img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWB6W7GLsVLLDYp72NtIGnB4r1aJVpVnOed17IB2abKLY_8tAl#.png"
 			}
 		],
 		friendsOnline: 10
