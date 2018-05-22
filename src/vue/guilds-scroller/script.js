@@ -1,19 +1,11 @@
 export default {
+	name: "guilds-scroller",
+	computed: {
+		hasImageUrl: function() {
+			return guild.img.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)\.(png|jpg|jpeg)/);
+		} 
+	},
 	data () {
-		return {
-			guilds: [
-				{
-					id: 1,
-					name: "N-O-D-E Community",
-					img: "https://cdn.discordapp.com/icons/438687916026232842/18c1e0ed2eda1b3e88a0515e28b3b50f.png"
-				},
-				{
-					id: 2,
-					name: "Valkyrie",
-					img: "https://cdn.discordapp.com/attachments/373141391909584910/445586709992833034/image.png"
-				}
-			],
-			friendsOnline: 10
-		};
+		return this.$parent.$data;
 	}
 };

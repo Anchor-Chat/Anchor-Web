@@ -5,8 +5,12 @@ module.exports = {
         "node": true,
         "jquery": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+        "eslint:recommended",
+        "plugin:vue/essential"
+    ],
     "parserOptions": {
+        "parser": "babel-eslint",
         "sourceType": "module"
     },
     "rules": {

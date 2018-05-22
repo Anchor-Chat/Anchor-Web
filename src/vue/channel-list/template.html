@@ -1,5 +1,5 @@
 <div id="channel-list">
     <header>
-        <div>{{ serverName }}</div>
+        <div>{{ Utils.getGuildById(this.$parent.$parent, this.$route.params.guildId).name }}</div>
     </header>
 </div>

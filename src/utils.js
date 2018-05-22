@@ -1,5 +1,5 @@
 export default {
-	checkConnection() {
+	checkConnection(callback) {
 		if (!web3.isConnected()) {
 			callback(false);
 		} else {
@@ -17,7 +17,15 @@ export default {
 		}
 		this.checkConnection(callback);
 	},
-
+	getGuildById(vue, id) {
+		let e = null;
+		vue.$data.guilds.forEach((el) => {
+			if (el.id == id) {
+				e = el;
+			}
+		});
+		return e;
+	},
 	showDialog(html, onYes, onNo) {
 		let body = $("body");
 		let dialog = $("<div id=\"dialog\"></div>");

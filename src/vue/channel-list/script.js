@@ -1,3 +1,14 @@
+import Utils from "../../utils.js";
+
 export default {
-	props: ["serverName"]
+	name: "channel-list",
+	props: ["serverName"],
+	computed: {
+
+	},
+	data () {
+		return {
+			Utils
+		};
+	}
 };
