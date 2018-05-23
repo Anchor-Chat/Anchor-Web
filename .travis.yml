@@ -17,6 +17,9 @@ before_cache:
   - rm -rf $HOME/.ipfs/repo.lock
   - rm -rf $HOME/.ipfs/api
 
+install:
+  - npm i
+
 before_script:
   - git remote set-url origin https://lukas2005:${$GH_TOKEN}@github.com/Anchor-Chat/Anchor-Web.git
 
