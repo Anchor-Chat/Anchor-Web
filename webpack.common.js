@@ -8,7 +8,7 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const WebpackOnBuildPlugin = require("./onbuild.js");
 
-let title = "Anchor"
+let title = "Anchor";
 module.exports = {
 	entry: "./src/index.js",
 	output: {
@@ -30,15 +30,15 @@ module.exports = {
 		new VueLoaderPlugin(),
 		new WebpackOnBuildPlugin(compilation => {
 			http.get("http://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js", (msg) => {
-				let pp = path.join(module.exports.output.path, "lib");
-				let p = path.parse(pp);
-				if (!fs.existsSync(p.dir)) {
-					fs.mkdirSync(p.dir);
+				let p = path.join(module.exports.output.path, "lib");
+				let pp = path.parse(p);
+				if (!fs.existsSync(pp.dir)) {
+					fs.mkdirSync(pp.dir);
 				}
-				if (!fs.existsSync(pp)) {
-					fs.mkdirSync(pp);
+				if (!fs.existsSync(p)) {
+					fs.mkdirSync(p);
 				}
-				msg.pipe(fs.createWriteStream(path.join(pp, "web3.min.js")));
+				msg.pipe(fs.createWriteStream(path.join(p, "web3.min.js")));
 			});
 		})
 	],
@@ -48,7 +48,7 @@ module.exports = {
 		}
 	},
 	externals: {
-		web3: 'Web3'
+		web3: "Web3"
 	},
 	module: {
 		rules: [
@@ -68,7 +68,7 @@ module.exports = {
 				use: [
 					"style-loader", // creates style nodes from JS strings
 					"css-loader", // translates CSS into CommonJS
-					"sass-loader" // compiles Sass to CSS
+					"sass-loader?sourceMap" // compiles Sass to CSS
 				]
 			},
 			{
