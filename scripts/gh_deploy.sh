@@ -14,14 +14,23 @@ git checkout gh-pages
 git pull
 
 echo Adding files...
-mkdir -p $TRAVIS_BRANCH/$TRAVIS_COMMIT
-mv -v ../preview/* ./$TRAVIS_BRANCH/$TRAVIS_COMMIT/
 
-echo "<script>window.location+='/${TRAVIS_BRANCH}/${TRAVIS_COMMIT}'</script>" > index.html
+if ($TRAVIS_PULL_REQUEST == "false") {
+	mkdir -p $TRAVIS_BRANCH/$TRAVIS_COMMIT
+	mv -v ../preview/* ./$TRAVIS_BRANCH/$TRAVIS_COMMIT/
+	echo "<script>window.location+='/${TRAVIS_BRANCH}/${TRAVIS_COMMIT}'</script>" > index.html
+} else {
+	mkdir -p ./PRs/$TRAVIS_PULL_REQUEST/$TRAVIS_COMMIT
+	mv -v ../preview/* ./PRs/$TRAVIS_PULL_REQUEST/$TRAVIS_COMMIT/
+}
 
 echo Uploading...
 git add .
-git commit -a -m "Built and uploaded preview for commit $TRAVIS_BRANCH/$TRAVIS_COMMIT"
+if ($TRAVIS_PULL_REQUEST == "false") {
+	git commit -a -m "Built and uploaded preview for commit $TRAVIS_BRANCH/$TRAVIS_COMMIT"
+} else {
+	git commit -a -m "Built and uploaded preview for pull request from $TRAVIS_PULL_REQUEST_SLUG:$TRAVIS_PULL_REQUEST_BRANCH - commit: $TRAVIS_COMMIT"
+}
 git push
 git checkout master
 
