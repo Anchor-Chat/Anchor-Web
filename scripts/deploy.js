@@ -13,6 +13,8 @@ const ipfsApiUtils = require("ipfs-api-utils");
 const out = "./dist";
 const repoPath = path.join(os.homedir(), ".ipfs");
 
+if (process.env.TRAVIS_PULL_REQUEST != "false") process.exit(0);
+
 console.log("Deploying to IPFS");
 console.log("Starting an IPFS node");
 ipfsd.spawn({disposable: false, repoPath: repoPath}, (err, ipfsNodee) => {
