@@ -8,7 +8,7 @@
 		<div class="separator friends-online"><span>{{ friendsOnline }} online</span></div>
 		<div class="guild" v-for="guild in guilds" :id="guild.id" data-toggle="tooltip" data-placement="right" :title="guild.name">
 			<router-link v-if="guild.id !== 0" class="waves-effect waves-light" draggable="false" :to="'/guild/'+guild.id">
-				<img v-if="hasImageUrl(guild)"      :src="guild.img">
+				<img v-if="isImageUrl(guild.img)"      :src="guild.img">
 				<i   v-else class="material-icons" >{{ guild.img }}</i>
 			</router-link>
 		</div>

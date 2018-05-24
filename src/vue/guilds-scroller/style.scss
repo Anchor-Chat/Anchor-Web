@@ -17,6 +17,8 @@
 	}
 	.scroller :not(:first-of-type).guild {
 		margin-bottom: 5px;
+		overflow: hidden;
+		box-shadow: 0 0 0 3px $s-light;
 	}
 	.separator {
 		margin-top: 5px;
@@ -32,6 +34,9 @@ $guild-size: 50px;
 	text-align: center;
 	margin-left: 10px;
 	margin-top: 10px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
 	a {
 		width: $guild-size;
 		height: $guild-size;
@@ -42,9 +47,6 @@ $guild-size: 50px;
 	img {
 		width: $guild-size;
 		height: $guild-size;
-		-webkit-border-radius: 50%;
-		-moz-border-radius: 50%;
-		border-radius: 50%;
 	}
 }
 

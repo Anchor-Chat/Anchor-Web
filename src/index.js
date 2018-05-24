@@ -11,6 +11,7 @@ import GuildsScroller from "./vue/guilds-scroller/index.vue";
 import GuildView from "./vue/guild-view/index.vue";
 
 import "file-loader?name=[name].[ext]!./img/og-image.jpg";
+import Logo from "./img/logo.png";
 
 import "./scss/style.scss";
 
@@ -31,8 +32,8 @@ let vue = new Vue({
 		guilds: [
 			{
 				id: 1,
-				name: "Translation Guild",
-				img: "g_translate"
+				name: "Anchor Official Server",
+				img: Logo
 			},
 			{
 				id: 20,
@@ -61,12 +62,12 @@ function main() {
 	//if (success) {
 	//	if (!web3.eth.defaultAccount) web3.eth.defaultAccount = web3.eth.accounts[0];
 
-	$(document).ready(function(){
-		$("[data-toggle=\"tooltip\"]").tooltip();   
-	});
-	$(".guild").hover((e) => {
-		$(e.target).tooltip();
-	});
+	// $(document).ready(function(){
+	// 	$("[data-toggle=\"tooltip\"]").tooltip();   
+	// });
+	// $(".guild").hover((e) => {
+	// 	$(e.target).tooltip();
+	// });
 
 	//let IpfsApi = import("ipfs-api");
 	//let ipfs = IpfsApi("localhost", 5001);
