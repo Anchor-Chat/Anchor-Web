@@ -20,9 +20,6 @@ before_cache:
 install:
   - npm i
 
-before_script:
-  - git remote set-url origin https://lukas2005:${GH_TOKEN}@github.com/Anchor-Chat/Anchor-Web.git
-
 script:
   - npm test
 
