@@ -25,6 +25,4 @@ script:
 
 after_success:
   - npm run preview && bash ./scripts/gh_deploy.sh
-  - git show-ref
-  - git remote show origin
-  - npm deploy
+  - npm run deploy
