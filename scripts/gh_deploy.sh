@@ -17,7 +17,7 @@ echo Adding files...
 mkdir -p $TRAVIS_BRANCH/$TRAVIS_COMMIT
 mv -v ../preview/* ./$TRAVIS_BRANCH/$TRAVIS_COMMIT/
 
-echo <script>window.location+="/${TRAVIS_BRANCH}/${TRAVIS_COMMIT}"</script> > index.html
+echo "<script>window.location+='/${TRAVIS_BRANCH}/${TRAVIS_COMMIT}'</script>"" > index.html
 
 echo Uploading...
 git add .
