@@ -1,7 +1,7 @@
 set -e
 
 echo Logging into git
-#git remote set-url origin https://lukas2005:${GH_TOKEN}@github.com/Anchor-Chat/Anchor-Web.git
+git remote set-url origin https://lukas2005:${GH_TOKEN}@github.com/Anchor-Chat/Anchor-Web.git
 
 echo Switching to branch gh-pages...
 git fetch
