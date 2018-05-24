@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --config webpack.dev.js",
-    "preview": "webpack --config webpack.dev.js",
+    "preview": "webpack --config webpack.preview.js",
     "build": "webpack --config webpack.prod.js",
     "deploy": "npm run build && node ./scripts/deploy.js",
     "test": "exit 0"

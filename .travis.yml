@@ -25,8 +25,7 @@ before_script:
 
 script:
   - npm test
-  - npm run preview
 
 after_success:
-  - bash ./scripts/gh_deploy.sh
+  - npm run preview && bash ./scripts/gh_deploy.sh
   - npm deploy
