@@ -5,8 +5,9 @@ import App from './App.vue';
 import { options } from './router';
 import store from './store';
 
-import "bootstrap";
-import "materialize-css";
+import 'bootstrap';
+import 'materialize-css';
+import './styles/style';
 
 // adapt vue-router routes to nativescript-vue-navigator
 const routes = options.routes.reduce((data, route) => {

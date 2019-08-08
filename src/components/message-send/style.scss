@@ -1,0 +1,38 @@
+@import '~styles/vars';
+
+$o-height: 75px;
+$in-height: 30px;
+$icon-size: 25px;
+
+.message-send {
+	display: flex;
+
+	height: $o-height;
+	width: 100%;
+
+	background-color: $p-light;
+
+	i {
+		margin-top: $o-height/2-$in-height/2;
+
+		font-size: $icon-size;
+		width: $icon-size;
+		height: $icon-size;
+
+		margin-left: $icon-size - 5px;
+		margin-right: $icon-size - 5px;
+	}
+
+	.input-field {
+		margin-top: $o-height/2-$in-height/2;
+		// margin-left: $icon-size - 5px;
+		// margin-right: $icon-size - 5px;
+
+		height: $in-height;
+		width: calc(100% - #{$icon-size - 5px + $icon-size} * 2);
+		input {
+			height: $in-height;
+			color: white;
+		}
+	}
+}

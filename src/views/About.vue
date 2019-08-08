@@ -30,6 +30,5 @@ export default class About extends Vue {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-@import "~styles/style-two";
-@import "~styles/style-one";
+
 </style>
