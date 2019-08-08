@@ -5,12 +5,15 @@ import App from './App.vue';
 import { options } from './router';
 import store from './store';
 
+import "bootstrap";
+import "materialize-css";
+
 // adapt vue-router routes to nativescript-vue-navigator
 const routes = options.routes.reduce((data, route) => {
-  data[route.name] = {
-    component: route.component,
-  };
-  return data;
+	data[route.name] = {
+		component: route.component,
+	};
+	return data;
 }, {});
 
 Vue.use(Navigator, { routes });
@@ -22,6 +25,6 @@ Vue.config.silent = false;
 // Vue.config.debug = true;
 
 new Vue({
-  store,
-  render: (h) => h('frame', [h(App)]),
+	store,
+	render: (h) => h('frame', [h(App)]),
 }).$start();
