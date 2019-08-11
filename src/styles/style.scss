@@ -4,6 +4,12 @@
 @import '../assets/fonts/junction/junction.css';
 @import '../assets/fonts/material-icons/style.css';
 
+$roboto-font-path: "~roboto-fontface/fonts";
+
+@import "~roboto-fontface/css/roboto/sass/roboto-fontface-light";
+@import "~roboto-fontface/css/roboto/sass/roboto-fontface-regular";
+@import "~roboto-fontface/css/roboto/sass/roboto-fontface-bold";
+
 @import './vars.scss';
 
 .offset-310 {
@@ -23,6 +29,22 @@
 	z-index: 1;
 }
 
+.no-margin {
+	margin: 0px;
+}
+
+.lighter {
+	color: $add-color;
+}
+
+.darker {
+	color: $s-light;
+}
+
+.accent {
+	color: $accent;
+}
+
 a {
 	color: white !important;
 	text-decoration: none !important;
@@ -37,7 +59,7 @@ body {
 
 	background-color: $primary-color;
 	color: white;
-	font-family: 'Junction';
+	font-family: 'Roboto', sans-serif;
 
 	-moz-user-select: none;
 	-ms-user-select: none;

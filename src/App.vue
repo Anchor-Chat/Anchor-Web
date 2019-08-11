@@ -1,13 +1,13 @@
 <template web>
 	<div class="w-page">
 		<!-- <login></login> -->
-		<div class="row h-100">
+		<!-- <div class="row h-100">
 			<server-scroller class="col-fixed-70 h-100"></server-scroller>
 			<channel-list class="col-fixed-240 h-100"></channel-list>
 			<div class="row col-md-12 no-gutters h-100 offset-310">
-				<router-view class="col-sm-12"></router-view>
 			</div>
-		</div>
+		</div>-->
+		<router-view></router-view>
 	</div>
 </template>
 
@@ -22,21 +22,33 @@ import ChannelList from "components/ChannelList.vue";
 const { VUE_APP_MODE } = process.env;
 
 @Component({
-	name: "home",
+	name: "app",
 	components: {
 		ServerScroller,
 		ChannelList
 	}
 })
 export default class App extends Vue {
-	private navbarTitle: string = `App.vue`;
+	mounted() {
+		if (sessionStorage) {
+			let login = sessionStorage.getItem("login");
+			let password = sessionStorage.getItem("password");
 
-	public goToHomePage() {
-		this.goTo("home");
-	}
+			if (login && password) {
+				(async () => {
+					await this.$store.dispatch("login", {
+						login,
+						password
+					});
 
-	public goToAboutPage() {
-		this.goTo("about");
+					this.$store.commit("CHANGE_STATE", "USERSPACE");
+
+					this.$parent.$emit("apiReady", this.$store.state.api);
+
+					if (this.$route.path == "/login") this.goTo("/@me");
+				})();
+			}
+		}
 	}
 
 	public goTo(route) {
@@ -54,10 +66,6 @@ export default class App extends Vue {
 .w-page {
 	height: 100%;
 	width: 100%;
-}
-
-.w-page > .row {
-	margin: 0px;
 }
 </style>
 

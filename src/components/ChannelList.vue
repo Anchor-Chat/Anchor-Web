@@ -1,12 +1,12 @@
 <template web>
 	<div id="channel-list">
 		<div class="header">
-			<div>{{ serverName() }}</div>
+			<div>{{ serverName }}</div>
 		</div>
 		<router-link
 			v-for="(channel) in [{id: 0, name: 'XD'}]"
 			:key="channel.id"
-			:to="'/server/0/channel/'+channel.id"
+			:to="`/channels/0/${channel.id}`"
 		>
 			<div class="channel">
 				<awesome-icon icon="hashtag"></awesome-icon>
@@ -23,8 +23,8 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 	name: "channel-list"
 })
 export default class ChannelList extends Vue {
-	serverName(): string | void {
-		return "no name";
+	get serverName(): string {
+		return (this.$store.state.activeServer || {}).name || "";
 	}
 }
 </script>
@@ -55,7 +55,7 @@ export default class ChannelList extends Vue {
 	width: 240px;
 	background-color: $s-light;
 
-	.channel:nth-child(1) {
+	.channel:first-child {
 		margin-top: 20px;
 	}
 

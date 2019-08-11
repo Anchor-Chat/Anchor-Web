@@ -1,9 +1,9 @@
 <template>
-	<div class="message-view">
+	<div class="message-view col-sm-12">
 		<div class="topbar"></div>
 
 		<div class="messages">
-			<div class="scroller">
+			<div id="message-scroller" class="scroller">
 				<div
 					:class="{'notSameAuthor': !hasSameAuthorPrev(i, message)}"
 					:key="i"
@@ -11,13 +11,13 @@
 					v-for="(message, i) in messages"
 				>
 					<img
-						v-if="!hasSameAuthorPrev(i, message)"
+						v-if="!hasSameAuthorPrev(i, message,)"
 						src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWB6W7GLsVLLDYp72NtIGnB4r1aJVpVnOed17IB2abKLY_8tAl#.png"
 					/>
 					<div class="content">
-						<div v-if="!hasSameAuthorPrev(i, message)" class="author">{{ message.author }}</div>
+						<div v-if="!hasSameAuthorPrev(i, message)" class="author">{{ message.author.login }}</div>
 						<br />
-						<div class="text">{{ message.text }}</div>
+						<div class="text">{{ message.content }}</div>
 					</div>
 				</div>
 			</div>
@@ -29,9 +29,10 @@
 
 <script lang="ts">
 import MessageSend from "components/message-send/MessageSend.vue";
+import $ from "jquery";
 
 import { Component, Prop, Watch, Vue } from "vue-property-decorator";
-import $ from "jquery";
+import { AnchorAPI, Message, TextChannel } from "@anchor-chat/anchor-api";
 
 @Component({
 	components: {
@@ -39,31 +40,41 @@ import $ from "jquery";
 	}
 })
 export default class MessageView extends Vue {
-	messages: any[] = [
-		{
-			author: "l",
-			text:
-				"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse molestie felis ac blandit porttitor. Donec elementum, neque in consectetur scelerisque, purus libero pretium nunc, quis volutpat nulla nisl ut ipsum. Donec faucibus augue diam, accumsan efficitur tortor interdum imperdiet. Proin lobortis, massa quis faucibus auctor, odio arcu aliquet mi, vitae sagittis lacus nulla id mauris. Aenean dapibus ligula at finibus faucibus. In hac habitasse platea dictumst. Donec finibus, augue non laoreet molestie, nibh massa laoreet mauris, at malesuada sapien elit sed lacus. Vestibulum commodo ligula ac eros porttitor, at feugiat sapien gravida. Fusce ut augue commodo, efficitur massa in, placerat leo. Donec fringilla dolor quam, a convallis ex condimentum id. Aenean sit amet blandit ipsum."
-		},
-		{
-			author: "l",
-			text:
-				"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse molestie felis ac blandit porttitor. Donec elementum, neque in consectetur scelerisque, purus libero pretium nunc, quis volutpat nulla nisl ut ipsum. Donec faucibus augue diam, accumsan efficitur tortor interdum imperdiet. Proin lobortis, massa quis faucibus auctor, odio arcu aliquet mi, vitae sagittis lacus nulla id mauris. Aenean dapibus ligula at finibus faucibus. In hac habitasse platea dictumst. Donec finibus, augue non laoreet molestie, nibh massa laoreet mauris, at malesuada sapien elit sed lacus. Vestibulum commodo ligula ac eros porttitor, at feugiat sapien gravida. Fusce ut augue commodo, efficitur massa in, placerat leo. Donec fringilla dolor quam, a convallis ex condimentum id. Aenean sit amet blandit ipsum."
-		}
-	];
+	messages: Message[] = [];
 
-	@Watch("$route")
-	fetchData() {}
-
-	hasSameAuthorPrev(i, message): boolean {
-		return (this.messages[i - 1] || {}).author === message.author;
+	get api() {
+		return <AnchorAPI>this.$store.state.api;
 	}
 
-	created() {
-		this.fetchData();
+	get activeChannel() {
+		return <TextChannel>this.$store.state.activeChannel;
+	}
+
+	@Watch("$route")
+	fetchMessages() {
+		console.log("Fetch!");
+		let channel = this.activeChannel;
+		let messages = channel.messages;
+
+		this.messages = messages
+			? Array.from(messages.values())
+			: this.messages;
+	}
+
+	hasSameAuthorPrev(i, message): boolean {
+		let msgs = this.messages;
+		return i === 0 || !msgs[i - 1]
+			? false
+			: msgs[i - 1].author.login == message.author.login;
 	}
 
 	mounted() {
+		let f = () => {
+			this.fetchMessages();
+		};
+		this.$root.$on("activeChannelChange", f);
+		if (this.activeChannel) f();
+
 		this.$nextTick(() => {
 			let messagesDom = $(".messages");
 			let guildViewDom = $(".guild-view");
@@ -84,6 +95,12 @@ export default class MessageView extends Vue {
 					}
 				}, 500);
 			}
+		});
+
+		this.$root.$on("apiReady", args => {
+			let api = (args[0] as AnchorAPI) || this.api;
+
+			api.on("message", e => this.fetchMessages());
 		});
 	}
 }
@@ -108,16 +125,17 @@ br {
 }
 
 .message-view {
-	overflow: hidden;
-
 	height: 100%;
 
 	.messages {
+		overflow: hidden;
+
 		.scroller {
 			overflow-y: scroll;
 			overflow-x: hidden;
 
 			width: calc(100% + 88px);
+			height: 100%;
 		}
 
 		height: calc(100% - #{$tb-height} - #{$o-height});
@@ -125,9 +143,6 @@ br {
 }
 
 .notSameAuthor {
-	img {
-		box-shadow: 0 0 0 3px $secondary-color;
-	}
 	margin-left: 25px !important;
 	margin-top: 15px !important;
 }
@@ -147,6 +162,8 @@ br {
 		-webkit-border-radius: 50%;
 		-moz-border-radius: 50%;
 		border-radius: 50%;
+
+		box-shadow: 0 0 0 3px $secondary-color;
 
 		margin-right: 25px;
 	}
@@ -176,5 +193,9 @@ br {
 			}
 		}
 	}
+}
+
+.message:last-child {
+	margin-bottom: 25px;
 }
 </style>

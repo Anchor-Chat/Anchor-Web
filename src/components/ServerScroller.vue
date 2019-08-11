@@ -1,32 +1,65 @@
 <template web>
-<div class="server-scroller">
-	<div class="scroller">
-		<div class="server" v-for="(server) in [{ id:1, name: 'idk', img: 'add' }]" :key="server.id" :id="server.id" data-toggle="tooltip" data-placement="right" :title="server.name">
-			<router-link :class="{'overflow': false}" class="waves-effect waves-light" draggable="false" :to="'/server/'+server.id">
-				<img v-if="isImageUrl(server.img)"      :src="server.img">
-				<i   v-else class="material-icons" >{{ server.img }}</i>
-			</router-link>
-		</div>
-		<div class="server add-server" data-toggle="tooltip" data-placement="right" title="Add new server">
-			<a class="button btn-floating btn-large waves-effect waves-light red">
-				<i class="material-icons">add</i>
-			</a>
+	<div class="server-scroller">
+		<div class="scroller">
+			<div
+				class="server"
+				v-for="(server) in servers"
+				:key="server.id"
+				:id="server.id"
+				data-toggle="tooltip"
+				data-placement="right"
+				:title="server.name"
+			>
+				<router-link
+					:class="{'overflow': false}"
+					class="waves-effect waves-light"
+					draggable="false"
+					:to="server.link || `/channels/${server.id}/0`"
+				>
+					<img v-if="isImageUrl(server.img)" :src="server.img" />
+					<i v-else class="material-icons">{{ server.img }}</i>
+				</router-link>
+			</div>
+			<div
+				class="server add-server"
+				data-toggle="tooltip"
+				data-placement="right"
+				title="Add new server"
+			>
+				<a class="button btn-floating btn-large waves-effect waves-light red">
+					<i class="material-icons">add</i>
+				</a>
+			</div>
 		</div>
 	</div>
-</div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Watch, Vue } from "vue-property-decorator";
 
 @Component({
 	name: "server-scroller"
 })
 export default class ServerScroller extends Vue {
+	get servers() {
+		let list = [{ id: -1, name: "Direct Messages", img: "account_circle", link: "/@me" }];
+		//list.push();
+		return list;
+	}
+
 	isImageUrl(str: string): RegExpMatchArray | null {
 		return str.match(
 			/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/
 		);
+	}
+
+	@Watch("$route")
+	updateStore() {
+		this.$store.commit("ACTIVE_SERVER", this.servers.filter((s) => s.id == <unknown>this.$route.params.serverId)[0])
+	}
+
+	mounted() {
+		this.updateStore();
 	}
 
 	newServer() {
@@ -34,10 +67,6 @@ export default class ServerScroller extends Vue {
 		// },
 		// () => {
 		// }, "New server", "Add server");
-	}
-
-	data() {
-		return this.$parent.$data;
 	}
 }
 </script>

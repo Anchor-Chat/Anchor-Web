@@ -2,7 +2,13 @@
 	<div class="message-send">
 		<i class="material-icons">attachment</i>
 		<div class="input-field">
-			<input type="text" id="message-text" class="validate" />
+			<input
+				type="text"
+				@keydown.alt="fetch()"
+				@keydown.enter="send()"
+				v-model="text"
+				class="validate"
+			/>
 		</div>
 		<i class="material-icons">tag_faces</i>
 	</div>
@@ -13,28 +19,39 @@ import ChannelList from "../channel-list/index.vue";
 
 import { Component, Prop, Vue } from "vue-property-decorator";
 import $ from "jquery";
+import { AnchorAPI, TextChannel } from "@anchor-chat/anchor-api";
 
 @Component({
 	name: "message-send"
 })
 export default class MessageSend extends Vue {
-	mounted() {
-		$("#message-text").on("keydown", e => {
-			if (e.key === "Enter") {
-				this.send();
-			}
-		});
+	text: string = "";
+
+	mounted() {}
+
+	get api() {
+		return <AnchorAPI>this.$store.state.api;
+	}
+
+	get activeChannel() {
+		return <TextChannel>this.$store.state.activeChannel;
 	}
 
 	send() {
-		let messagesDom = $(".messages");
-		let textDom = $("#message-text");
-		let text = textDom.val();
-		textDom.val("");
+		if (this.text === "") return;
+
+		this.activeChannel.send(this.text);
+		this.text = "";
 
 		setTimeout(() => {
-			messagesDom.scrollTop(messagesDom.prop("scrollHeight"));
+			let scroller = $("#message-scroller");
+			scroller.scrollTop(scroller.prop("scrollHeight"));
+			//this.$parent.fetchMessages();
 		}, 500);
+	}
+
+	fetch() {
+		(<any>this.$parent).fetchMessages();
 	}
 }
 </script>
