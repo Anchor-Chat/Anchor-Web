@@ -1,79 +1,36 @@
-<template web>
-	<div class="w-page">
-		<!-- <login></login> -->
-		<!-- <div class="row h-100">
-			<server-scroller class="col-fixed-70 h-100"></server-scroller>
-			<channel-list class="col-fixed-240 h-100"></channel-list>
-			<div class="row col-md-12 no-gutters h-100 offset-310">
-			</div>
-		</div>-->
-		<router-view></router-view>
+<template>
+	<div id="app">
+		<div id="nav">
+			<router-link to="/">
+				Home
+			</router-link> |
+			<router-link to="/about">
+				About
+			</router-link>
+		</div>
+		<router-view />
 	</div>
 </template>
 
-<template native></template>
-
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-
-import ServerScroller from "components/ServerScroller.vue";
-import ChannelList from "components/ChannelList.vue";
-
-const { VUE_APP_MODE } = process.env;
-
-@Component({
-	name: "app",
-	components: {
-		ServerScroller,
-		ChannelList
-	}
-})
-export default class App extends Vue {
-	mounted() {
-		if (sessionStorage) {
-			let login = sessionStorage.getItem("login");
-			let password = sessionStorage.getItem("password");
-
-			if (login && password) {
-				(async () => {
-					await this.$store.dispatch("login", {
-						login,
-						password
-					});
-
-					this.$store.commit("CHANGE_STATE", "USERSPACE");
-
-					this.$parent.$emit("apiReady", this.$store.state.api);
-
-					if (this.$route.path == "/login") this.goTo("/@me");
-				})();
-			}
-		}
-	}
-
-	public goTo(route) {
-		VUE_APP_MODE === "web"
-			? this.$router.push(route)
-			: Vue.prototype.$navigator.navigate(route);
-	}
+<style lang="scss">
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
 }
-</script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style web lang="scss">
-@import "~styles/vars";
+#nav {
+  padding: 30px;
 
-.w-page {
-	height: 100%;
-	width: 100%;
-}
-</style>
+  a {
+    font-weight: bold;
+    color: #2c3e50;
 
-<style native lang="scss">
-@import "~styles/vars";
-
-.w-page {
-	height: 100%;
-	width: 100%;
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
 }
 </style>

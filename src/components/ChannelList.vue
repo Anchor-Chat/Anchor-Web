@@ -9,7 +9,7 @@
 			:to="`/channels/0/${channel.id}`"
 		>
 			<div class="channel">
-				<awesome-icon icon="hashtag"></awesome-icon>
+				<awesome-icon icon="hashtag" />
 				<span>{{ channel.name }}</span>
 			</div>
 		</router-link>
@@ -17,14 +17,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({
-	name: "channel-list"
+	name: 'channel-list'
 })
 export default class ChannelList extends Vue {
-	get serverName(): string {
-		return (this.$store.state.activeServer || {}).name || "";
+	get serverName (): string {
+		return (this.$store.state.activeServer || {}).name || '';
 	}
 }
 </script>

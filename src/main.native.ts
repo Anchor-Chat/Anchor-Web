@@ -2,7 +2,7 @@ import Vue from 'nativescript-vue';
 import Navigator from 'nativescript-vue-navigator';
 
 import App from './App.vue';
-import { options } from './router';
+import { routes as rt } from './router';
 import store from './store';
 
 import 'bootstrap';
@@ -10,7 +10,7 @@ import 'materialize-css';
 import './styles/style';
 
 // // adapt vue-router routes to nativescript-vue-navigator
-// const routes = options.routes.reduce((data, route) => {
+// const routes = rt.reduce((data, route) => {
 // 	data[route.name] = {
 // 		component: route.component,
 // 	};

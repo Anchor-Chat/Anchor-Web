@@ -82,7 +82,7 @@ export default class LoginView extends Vue {
 		this.$store.commit("CHANGE_STATE", "USERSPACE");
 		console.log(this.$store.state.api)
 		this.$parent.$emit("apiReady", this.$store.state.api);
-		(<App>this.$parent).goTo("/@me");
+		(<typeof App>this.$parent).goTo("/@me");
 	}
 }
 </script>
