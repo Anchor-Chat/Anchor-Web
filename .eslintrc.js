@@ -18,7 +18,8 @@ module.exports = {
 		'vue/script-indent': ['error', 'tab'],
 		'vue/html-indent': ['error', 'tab'],
 		semi: ['warn', 'always'],
-		'no-tabs': ['warn', { allowIndentationTabs: true }]
+		'no-tabs': ['off', { allowIndentationTabs: true }],
+		'space-before-function-paren': ['error', { anonymous: 'always', named: 'never' }]
 	},
 	ignorePatterns: ['webpack.config.js', 'vue.config.js']
 };

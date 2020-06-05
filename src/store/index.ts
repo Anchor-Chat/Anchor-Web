@@ -24,7 +24,7 @@ export default new Vuex.Store<RootStore>({
 		activeChannel: null as unknown as TextChannel
 	},
 	mutations: {
-		SET_LOGIN_INFO (state, data) {
+		SET_LOGIN_INFO(state, data) {
 			state.login = data.login;
 			state.password = data.password;
 			state.api = data.api;
@@ -36,18 +36,18 @@ export default new Vuex.Store<RootStore>({
 				sessionStorage.setItem('password', data.password);
 			}
 		},
-		CHANGE_STATE (state, newState) {
+		CHANGE_STATE(state, newState) {
 			state.state = newState;
 		},
-		ACTIVE_SERVER (state, server) {
+		ACTIVE_SERVER(state, server) {
 			state.activeServer = server;
 		},
-		ACTIVE_CHANNEL (state, channel) {
+		ACTIVE_CHANNEL(state, channel) {
 			state.activeChannel = channel;
 		}
 	},
 	actions: {
-		async createAccount (context, data) {
+		async createAccount(context, data) {
 			return new Promise((resolve, reject) => {
 				const builder = new AnchorAPIBuilder()
 					.setCredentials(data.login, data.password)
@@ -75,7 +75,7 @@ export default new Vuex.Store<RootStore>({
 				});
 			});
 		},
-		login (context, data) {
+		login(context, data) {
 			return new Promise((resolve, reject) => {
 				const builder = new AnchorAPIBuilder()
 					.setCredentials(data.login, data.password)

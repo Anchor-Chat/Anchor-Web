@@ -2,10 +2,10 @@
 	<div class="server-scroller">
 		<div class="scroller">
 			<div
-				class="server"
 				v-for="(server) in servers"
-				:key="server.id"
 				:id="server.id"
+				:key="server.id"
+				class="server"
 				data-toggle="tooltip"
 				data-placement="right"
 				:title="server.name"
@@ -16,8 +16,14 @@
 					draggable="false"
 					:to="server.link || `/channels/${server.id}/0`"
 				>
-					<img v-if="isImageUrl(server.img)" :src="server.img" />
-					<i v-else class="material-icons">{{ server.img }}</i>
+					<img
+						v-if="isImageUrl(server.img)"
+						:src="server.img"
+					>
+					<i
+						v-else
+						class="material-icons"
+					>{{ server.img }}</i>
 				</router-link>
 			</div>
 			<div
@@ -35,15 +41,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Watch, Vue } from "vue-property-decorator";
+import { Component, Watch, Vue } from 'vue-property-decorator';
 
 @Component({
-	name: "server-scroller"
+	name: 'server-scroller'
 })
 export default class ServerScroller extends Vue {
 	get servers() {
-		let list = [{ id: -1, name: "Direct Messages", img: "account_circle", link: "/@me" }];
-		//list.push();
+		const list = [{ id: -1, name: 'Direct Messages', img: 'account_circle', link: '/@me' }];
+		// list.push();
 		return list;
 	}
 
@@ -53,9 +59,9 @@ export default class ServerScroller extends Vue {
 		);
 	}
 
-	@Watch("$route")
+	@Watch('$route')
 	updateStore() {
-		this.$store.commit("ACTIVE_SERVER", this.servers.filter((s) => s.id == <unknown>this.$route.params.serverId)[0])
+		this.$store.commit('ACTIVE_SERVER', this.servers.filter((s) => s.id === (this.$route.params.serverId as unknown))[0]);
 	}
 
 	mounted() {

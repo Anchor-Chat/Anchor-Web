@@ -1,38 +1,48 @@
 <template>
 	<div class="message-view col-sm-12">
-		<div class="topbar"></div>
+		<div class="topbar" />
 
 		<div class="messages">
-			<div id="message-scroller" class="scroller">
+			<div
+				id="message-scroller"
+				class="scroller"
+			>
 				<div
-					:class="{'notSameAuthor': !hasSameAuthorPrev(i, message)}"
-					:key="i"
-					class="message"
 					v-for="(message, i) in messages"
+					:key="i"
+					:class="{'notSameAuthor': !hasSameAuthorPrev(i, message)}"
+					class="message"
 				>
 					<img
 						v-if="!hasSameAuthorPrev(i, message,)"
 						src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWB6W7GLsVLLDYp72NtIGnB4r1aJVpVnOed17IB2abKLY_8tAl#.png"
-					/>
+					>
 					<div class="content">
-						<div v-if="!hasSameAuthorPrev(i, message)" class="author">{{ message.author.login }}</div>
-						<br />
-						<div class="text">{{ message.content }}</div>
+						<div
+							v-if="!hasSameAuthorPrev(i, message)"
+							class="author"
+						>
+							{{ message.author.login }}
+						</div>
+						<br>
+						<div class="text">
+							{{ message.content }}
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<message-send></message-send>
+		<message-send />
 	</div>
 </template>
 
 <script lang="ts">
-import MessageSend from "components/message-send/MessageSend.vue";
-import $ from "jquery";
+import MessageSend from 'components/message-send/MessageSend.vue';
+import $ from 'jquery';
 
-import { Component, Prop, Watch, Vue } from "vue-property-decorator";
-import { AnchorAPI, Message, TextChannel } from "@anchor-chat/anchor-api";
+import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
+import { AnchorAPI, Message, TextChannel } from '@anchor-chat/anchor-api';
 
 @Component({
 	components: {
@@ -42,70 +52,69 @@ import { AnchorAPI, Message, TextChannel } from "@anchor-chat/anchor-api";
 export default class MessageView extends Vue {
 	messages: Message[] = [];
 
-	get api() {
-		return <AnchorAPI>this.$store.state.api;
+	get api(): AnchorAPI {
+		return this.$store.state.api;
 	}
 
-	get activeChannel() {
-		return <TextChannel>this.$store.state.activeChannel;
+	get activeChannel(): TextChannel {
+		return this.$store.state.activeChannel;
 	}
 
-	@Watch("$route")
-	fetchMessages() {
-		console.log("Fetch!");
-		let channel = this.activeChannel;
-		let messages = channel.messages;
+	@Watch('$route')
+	async fetchMessages() {
+		console.log('Fetch!');
+		const channel = this.activeChannel;
+		const messages = channel.messages;
 
 		this.messages = messages
-			? Array.from(messages.values())
+			? Array.from(await messages.fetchMessages())
 			: this.messages;
 	}
 
-	hasSameAuthorPrev(i, message): boolean {
-		let msgs = this.messages;
+	hasSameAuthorPrev(i: number, message: Message): boolean {
+		const msgs = this.messages;
 		return i === 0 || !msgs[i - 1]
 			? false
-			: msgs[i - 1].author.login == message.author.login;
+			: msgs[i - 1].author.login === message.author.login;
 	}
 
 	mounted() {
-		let f = () => {
+		const f = () => {
 			this.fetchMessages();
 		};
-		this.$root.$on("activeChannelChange", f);
+		this.$root.$on('activeChannelChange', f);
 		if (this.activeChannel) f();
 
 		this.$nextTick(() => {
-			let messagesDom = $(".messages");
-			let guildViewDom = $(".guild-view");
-			let topbarDom = $(".topbar");
-			let messageSendDom = $(".message-send");
+			const messagesDom = $('.messages');
+			const guildViewDom = $('.guild-view');
+			const topbarDom = $('.topbar');
+			const messageSendDom = $('.message-send');
 
 			setTimeout(() => {
-				messagesDom.scrollTop(messagesDom.prop("scrollHeight"));
+				messagesDom.scrollTop(messagesDom.prop('scrollHeight'));
 			}, 2000);
 
 			if (guildViewDom && topbarDom && messageSendDom) {
 				setInterval(() => {
-					let h1 = guildViewDom.height();
-					let h2 = topbarDom.height();
-					let h3 = messageSendDom.height();
+					const h1 = guildViewDom.height();
+					const h2 = topbarDom.height();
+					const h3 = messageSendDom.height();
 					if (h1 && h2 && h3) {
-						messagesDom.css("height", h1 - h2 - h3 + "px");
+						messagesDom.css('height', h1 - h2 - h3 + 'px');
 					}
 				}, 500);
 			}
 		});
 
-		this.$root.$on("apiReady", args => {
-			let api = (args[0] as AnchorAPI) || this.api;
+		this.$root.$on('apiReady', args => {
+			const api = (args[0] as AnchorAPI) || this.api;
 
-			api.on("message", e => this.fetchMessages());
+			api.on('message', e => this.fetchMessages());
 		});
 	}
 }
 </script>
-
 
 <style lang="scss" scoped>
 @import "~styles/vars";

@@ -23,7 +23,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 	name: 'channel-list'
 })
 export default class ChannelList extends Vue {
-	get serverName (): string {
+	get serverName(): string {
 		return (this.$store.state.activeServer || {}).name || '';
 	}
 }

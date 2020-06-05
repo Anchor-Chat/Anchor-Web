@@ -1,11 +1,15 @@
 <template web>
 	<div id="channel-list">
-		<div class="header"></div>
-		<router-link v-for="(channel) in this.channels" :key="channel.id" :to="`/@me/${channel.id}`">
+		<div class="header" />
+		<router-link
+			v-for="(channel) in this.channels"
+			:key="channel.id"
+			:to="`/@me/${channel.id}`"
+		>
 			<div class="channel">
 				<img
 					src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWB6W7GLsVLLDYp72NtIGnB4r1aJVpVnOed17IB2abKLY_8tAl#.png"
-				/>
+				>
 				<span>{{ channelName(channel) }}</span>
 			</div>
 		</router-link>
@@ -13,20 +17,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch, Vue } from "vue-property-decorator";
-import { DMChannel, AnchorAPI } from "@anchor-chat/anchor-api";
-import { EventEmitter } from "events";
+import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
+import { DMChannel, AnchorAPI } from '@anchor-chat/anchor-api';
+import { EventEmitter } from 'events';
 
 @Component({
-	name: "dm-list"
+	name: 'dm-list'
 })
 export default class DMList extends Vue {
 	get serverName(): string {
-		return (this.$store.state.activeServer || {}).name || "";
+		return (this.$store.state.activeServer || {}).name || '';
 	}
 
-	get api() {
-		return <AnchorAPI>this.$store.state.api;
+	get api(): AnchorAPI {
+		return this.$store.state.api;
 	}
 
 	channels: DMChannel[] = [];
@@ -36,24 +40,24 @@ export default class DMList extends Vue {
 	// }
 
 	mounted() {
-		let f = (args) => {
-			let api = args[0] as AnchorAPI;
+		const f = (args) => {
+			const api = args[0] as AnchorAPI;
 
 			this.fetchData(api);
-			this.api.on("dmChannelCreate", () => {
+			this.api.on('dmChannelCreate', () => {
 				this.fetchData(api);
 			});
 		};
 
 		if (!this.api) {
-			this.$root.$on("apiReady", f);
+			this.$root.$on('apiReady', f);
 		} else {
 			f([this.api]);
 		}
 	}
 
 	fetchData(api) {
-		console.log("Fetch DMs")
+		console.log('Fetch DMs');
 		this.api.getDMChannels().then(channels => {
 			this.channels = channels;
 			this.channelSelect();
@@ -66,15 +70,15 @@ export default class DMList extends Vue {
 			.filter(e => e !== this.api.user.login)
 			.reduce((prevVal, val, i, arr) => {
 				console.log(arr);
-				return i == 0 ? `${val}, ${prevVal}` : val;
+				return i === 0 ? `${val}, ${prevVal}` : val;
 			});
 	}
 
-	@Watch("$route")
+	@Watch('$route')
 	channelSelect() {
 		if (this.$route.params.channel) {
-			this.$store.commit("ACTIVE_CHANNEL", this.api.dmHelper.channels.get(this.$route.params.channel))
-			this.$root.$emit("activeChannelChange");
+			this.$store.commit('ACTIVE_CHANNEL', this.api.dmHelper.channels.get(this.$route.params.channel));
+			this.$root.$emit('activeChannelChange');
 		}
 	}
 }

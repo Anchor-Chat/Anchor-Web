@@ -3,55 +3,56 @@
 		<i class="material-icons">attachment</i>
 		<div class="input-field">
 			<input
-				type="text"
-				@keydown.alt="fetch()"
-				@keydown.enter="send()"
 				v-model="text"
+				type="text"
 				class="validate"
-			/>
+				@keydown.alt="fetch()"
+				@keydown.enter.exact="send()"
+			>
 		</div>
 		<i class="material-icons">tag_faces</i>
 	</div>
 </template>
 
 <script lang="ts">
-import ChannelList from "../channel-list/index.vue";
+import ChannelList from '../channel-list/index.vue';
 
-import { Component, Prop, Vue } from "vue-property-decorator";
-import $ from "jquery";
-import { AnchorAPI, TextChannel } from "@anchor-chat/anchor-api";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import $ from 'jquery';
+import { AnchorAPI, TextChannel } from '@anchor-chat/anchor-api';
+import MessageView from '../../views/MessageView.vue';
 
 @Component({
-	name: "message-send"
+	name: 'message-send'
 })
 export default class MessageSend extends Vue {
-	text: string = "";
+	text = '';
 
-	mounted() {}
+	// mounted() {}
 
 	get api() {
-		return <AnchorAPI>this.$store.state.api;
+		return this.$store.state.api;
 	}
 
 	get activeChannel() {
-		return <TextChannel>this.$store.state.activeChannel;
+		return this.$store.state.activeChannel;
 	}
 
 	send() {
-		if (this.text === "") return;
+		if (this.text === '') return;
 
 		this.activeChannel.send(this.text);
-		this.text = "";
+		this.text = '';
 
 		setTimeout(() => {
-			let scroller = $("#message-scroller");
-			scroller.scrollTop(scroller.prop("scrollHeight"));
-			//this.$parent.fetchMessages();
+			const scroller = $('#message-scroller');
+			scroller.scrollTop(scroller.prop('scrollHeight'));
+			// this.$parent.fetchMessages();
 		}, 500);
 	}
 
 	fetch() {
-		(<any>this.$parent).fetchMessages();
+		(this.$parent as MessageView).fetchMessages();
 	}
 }
 </script>

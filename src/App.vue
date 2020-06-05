@@ -29,7 +29,7 @@ const { VUE_APP_MODE } = process.env;
 	}
 })
 export default class App extends Vue {
-	mounted () {
+	mounted() {
 		if (sessionStorage) {
 			const login = sessionStorage.getItem('login');
 			const password = sessionStorage.getItem('password');
@@ -51,7 +51,7 @@ export default class App extends Vue {
 		}
 	}
 
-	public goTo (route) {
+	public goTo(route) {
 		VUE_APP_MODE === 'web'
 			? this.$router.push(route)
 			: Vue.prototype.$navigator.navigate(route);
