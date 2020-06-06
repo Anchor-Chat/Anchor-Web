@@ -6,6 +6,9 @@ module.exports = {
 			new FaviconsWebpackPlugin({
 				logo: './src/assets/logo.png'
 			})
-		]
+		],
+		devServer: {
+			allowedHosts: ['.gitpod.io']
+		}
 	}
 };
