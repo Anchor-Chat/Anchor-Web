@@ -12,6 +12,10 @@ import 'materialize-css';
 
 import './styles/style';
 
+import VModal from 'vue-js-modal';
+
+Vue.use(VModal);
+
 fontAwesome.add(faHashtag);
 
 Vue.component('awesome-icon', FontAwesomeIcon);

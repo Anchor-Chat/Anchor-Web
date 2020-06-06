@@ -1,6 +1,28 @@
 <template web>
 	<div id="channel-list">
+		<modal
+			name="add-dm"
+			height="auto"
+			@clickToClose="true"
+		>
+			<input v-model="dmAddLogin">
+			<input
+				type="button"
+				value="Ok"
+				@click="addUser()"
+			>
+		</modal>
+
 		<div class="header" />
+
+		<div class="separator">
+			Direct Messages
+			<i
+				class="material-icons"
+				@click="showDialog()"
+			>add_circle_outline</i>
+		</div>
+
 		<router-link
 			v-for="(channel) in this.channels"
 			:key="channel.id"
@@ -20,6 +42,7 @@
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 import { DMChannel, AnchorAPI } from '@anchor-chat/anchor-api';
 import { EventEmitter } from 'events';
+import ChannelList from './ChannelList.vue';
 
 @Component({
 	name: 'dm-list'
@@ -38,6 +61,8 @@ export default class DMList extends Vue {
 	// get dmChannels() {
 	// 	return this.api ? await this.api.getDMChannels() : [];
 	// }
+
+	dmAddLogin = '';
 
 	mounted() {
 		const f = (args) => {
@@ -64,6 +89,18 @@ export default class DMList extends Vue {
 		});
 	}
 
+	showDialog() {
+		this.$modal.show('add-dm');
+	}
+
+	addUser() {
+		this.$modal.hide('add-dm');
+
+		this.api.getUserData(this.dmAddLogin).then(user => {
+			setTimeout(() => user.createDM(), 500);
+		});
+	}
+
 	channelName(channel: DMChannel) {
 		return null || channel.members
 			.map(m => m.login)
@@ -87,6 +124,15 @@ export default class DMList extends Vue {
 <style lang="scss" scoped>
 @import "~styles/vars";
 
+div.vm--modal {
+	align-content: center;
+	input {
+		width: 300px;
+		margin-left: 30px;
+		margin-right: auto;
+	}
+}
+
 .header {
 	width: 100%;
 	height: 45px;
@@ -109,6 +155,25 @@ export default class DMList extends Vue {
 #channel-list {
 	width: 240px;
 	background-color: $s-light;
+
+	.separator {
+		color: $add-color;
+
+		text-align: left;
+		vertical-align: middle;
+		padding-top: 15px;
+		padding-left: 16px;
+
+		i {
+			float: right;
+			padding-right: 10px;
+			margin-top: -4px;
+		}
+
+		i:hover {
+			cursor: pointer;
+		}
+	}
 
 	.channel:first-child {
 		margin-top: 20px;

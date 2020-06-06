@@ -62,13 +62,10 @@ export default class MessageView extends Vue {
 
 	@Watch('$route')
 	async fetchMessages() {
-		console.log('Fetch!');
-		const channel = this.activeChannel;
-		const messages = channel.messages;
-
-		this.messages = messages
-			? Array.from(await messages.fetchMessages())
-			: this.messages;
+		if (this.activeChannel != null) {
+			console.log('Fetch!');
+			this.messages = Array.from(await this.activeChannel.messages.fetchMessages({ limit: -1 }));
+		}
 	}
 
 	hasSameAuthorPrev(i: number, message: Message): boolean {
@@ -110,7 +107,12 @@ export default class MessageView extends Vue {
 		this.$root.$on('apiReady', args => {
 			const api = (args[0] as AnchorAPI) || this.api;
 
-			api.on('message', e => this.fetchMessages());
+			api.on('messageChange', e => {
+				console.log(e);
+				if (e === this.activeChannel) {
+					this.fetchMessages();
+				}
+			});
 		});
 	}
 }

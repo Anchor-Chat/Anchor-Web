@@ -48,6 +48,7 @@ export default class MessageSend extends Vue {
 			const scroller = $('#message-scroller');
 			scroller.scrollTop(scroller.prop('scrollHeight'));
 			// this.$parent.fetchMessages();
+			this.fetch();
 		}, 500);
 	}
 

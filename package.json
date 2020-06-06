@@ -18,6 +18,7 @@
     "serve:android": "npm run setup-webpack-config && tns run android --bundle --env.development",
     "serve:ios": "npm run setup-webpack-config && tns run ios --bundle --env.development",
     "serve:web": "vue-cli-service serve --mode development.web",
+    "webrtc-star": "star-signal --port=13579 --host=127.0.0.1",
     "setup-webpack-config": "node ./node_modules/vue-cli-plugin-nativescript-vue/lib/scripts/webpack-maintenance pre"
   },
   "dependencies": {
@@ -28,6 +29,7 @@
     "@types/jquery": "^3.3.38",
     "bootstrap": "^4.5.0",
     "core-js": "^3.6.5",
+    "ipfs-http-client": "^44.2.0",
     "jquery": "^3.5.1",
     "materialize-css": "^1.0.0",
     "nativescript-vue": "^2.6.4",
@@ -38,6 +40,7 @@
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-cli-plugin-pug": "^1.0.7",
+    "vue-js-modal": "^2.0.0-rc.3",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
@@ -67,6 +70,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "favicons-webpack-plugin": "^2.1.0",
     "fork-ts-checker-webpack-plugin": "^4.1.6",
+    "libp2p-webrtc-star": "^0.18.3",
     "lint-staged": "^10.2.9",
     "nativescript-dev-webpack": "^1.5.1",
     "nativescript-vue-template-compiler": "^2.6.4",

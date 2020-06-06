@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { AnchorAPIBuilder, AnchorAPI, TextChannel } from '@anchor-chat/anchor-api';
+// import ipfsClient from 'ipfs-http-client';
 
 Vue.use(Vuex);
 
@@ -13,6 +14,20 @@ interface RootStore {
 	activeServer: any;
 	activeChannel: TextChannel;
 }
+
+const ipfsConfig = {
+	config: {
+		Addresses: {
+			Swarm: [
+				// '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
+				// '/dns4/stardust.mkg20001.io/tcp/443/wss/p2p-stardust'
+				// '/ip6/::/tcp/5892/ws/p2p-stardust'
+				// '/dns4/star-signal.cloud.ipfs.team/tcp/443/wss/p2p-webrtc-star',
+				'/ip4/127.0.0.1/tcp/13579/wss/p2p-webrtc-star'
+			]
+		}
+	}
+};
 
 export default new Vuex.Store<RootStore>({
 	state: {
@@ -51,6 +66,12 @@ export default new Vuex.Store<RootStore>({
 			return new Promise((resolve, reject) => {
 				const builder = new AnchorAPIBuilder()
 					.setCredentials(data.login, data.password)
+					.setIPFSConfig(ipfsConfig)
+					// .setIPFS(ipfsClient({
+					// 	host: 'localhost',
+					// 	port: 5001,
+					// 	protocol: 'http'
+					// }))
 					.setDirectory(data.login);
 
 				// if (window.ipfs && window.ipfs.enable) {
@@ -79,6 +100,12 @@ export default new Vuex.Store<RootStore>({
 			return new Promise((resolve, reject) => {
 				const builder = new AnchorAPIBuilder()
 					.setCredentials(data.login, data.password)
+					.setIPFSConfig(ipfsConfig)
+					// .setIPFS(ipfsClient({
+					// 	host: 'localhost',
+					// 	port: 5001,
+					// 	protocol: 'http'
+					// }))
 					.setDirectory(data.login);
 
 				builder.login().then((api) => {
