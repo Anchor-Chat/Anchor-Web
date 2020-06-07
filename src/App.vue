@@ -47,6 +47,10 @@ export default class App extends Vue {
 
 					if (this.$route.path === '/login') this.goTo('/@me');
 				})();
+			} else {
+				if (this.$route.path !== '/login') {
+					this.goTo('/login');
+				}
 			}
 		}
 	}

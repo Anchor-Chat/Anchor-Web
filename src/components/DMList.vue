@@ -66,10 +66,10 @@ export default class DMList extends Vue {
 
 	mounted() {
 		const f = (args) => {
-			const api = args[0] as AnchorAPI;
+			const api = args as AnchorAPI;
 
 			this.fetchData(api);
-			this.api.on('dmChannelCreate', () => {
+			api.on('dmChannelUpdate', () => {
 				this.fetchData(api);
 			});
 		};
@@ -77,16 +77,14 @@ export default class DMList extends Vue {
 		if (!this.api) {
 			this.$root.$on('apiReady', f);
 		} else {
-			f([this.api]);
+			f(this.api);
 		}
 	}
 
 	fetchData(api) {
 		console.log('Fetch DMs');
-		this.api.getDMChannels().then(channels => {
-			this.channels = channels;
-			this.channelSelect();
-		});
+		this.channels = api.getDMChannels();
+		this.channelSelect();
 	}
 
 	showDialog() {
