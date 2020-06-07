@@ -1,13 +1,13 @@
 <template web>
 	<div class="login">
-		<span class="title">Welcome!</span>
+		<span class="title">{{ $t("login.message.welcome") }}</span>
 		<div class="block">
 			<div>
-				<h5>Login</h5>
+				<h5>{{ $t("login.field.login") }}</h5>
 				<input v-model="login">
 			</div>
 			<div class>
-				<h5>Password</h5>
+				<h5>{{ $t("login.field.password") }}</h5>
 				<input
 					v-model="password"
 					type="password"
@@ -50,10 +50,10 @@ export default class LoginView extends Vue {
 		let val;
 		switch (v || this.state) {
 		case 'LOGIN':
-			val = i === 0 ? 'Need an account?' : 'Sign up';
+			val = i === 0 ? this.$t('login.message.new_account') : this.$t('login.action.signup');
 			break;
 		case 'SIGNUP':
-			val = i === 0 ? 'Already have an account?' : 'Log in';
+			val = i === 0 ? this.$t('login.message.existing_account') : this.$t('login.action.login');
 			break;
 		}
 		return val;

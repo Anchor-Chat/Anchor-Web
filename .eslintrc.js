@@ -5,6 +5,7 @@ module.exports = {
 	},
 	extends: [
 		'plugin:vue/recommended',
+		// 'plugin:@intlify/vue-i18n/recommended',
 		'@vue/standard',
 		'@vue/typescript/recommended'
 	],
@@ -20,6 +21,8 @@ module.exports = {
 		semi: ['warn', 'always'],
 		'no-tabs': ['off', { allowIndentationTabs: true }],
 		'space-before-function-paren': ['error', { anonymous: 'always', named: 'never' }]
+		// 'vue-i18n/no-dynamic-keys': ['error'],
+		// 'vue-i18n/no-unused-keys': ['warn'],
 	},
 	ignorePatterns: ['webpack.config.js', 'vue.config.js']
 };

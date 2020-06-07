@@ -30,7 +30,7 @@
 				class="server add-server"
 				data-toggle="tooltip"
 				data-placement="right"
-				title="Add new server"
+				:title="$t('server_list.action.server_add')"
 			>
 				<a class="button btn-floating btn-large waves-effect waves-light red">
 					<i class="material-icons">add</i>

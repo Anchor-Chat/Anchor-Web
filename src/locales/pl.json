@@ -1,0 +1,11 @@
+{
+  "dm_list.title": "Wiadomości Prywatne",
+  "server_list.action.server_add": "Dodaj server",
+  "login.action.signup": "Zarejestruj się",
+  "login.action.login": "Zaloguj się",
+  "login.message.existing_account": "Już posiadasz konto?",
+  "login.message.new_account": "Potrzebujesz konta?",
+  "login.message.welcome": "Witaj!",
+  "login.field.password": "Hasło",
+  "login.field.login": "Login"
+}

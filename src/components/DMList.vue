@@ -16,7 +16,7 @@
 		<div class="header" />
 
 		<div class="separator">
-			Direct Messages
+			{{ $t("dm_list.title") }}
 			<i
 				class="material-icons"
 				@click="showDialog()"

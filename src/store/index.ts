@@ -23,8 +23,8 @@ const ipfsConfig = {
 				// '/dns4/stardust.mkg20001.io/tcp/443/wss/p2p-stardust'
 				// '/ip6/::/tcp/5892/ws/p2p-stardust'
 				// '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star'
-				// '/ip4/127.0.0.1/tcp/13579/wss/p2p-webrtc-star',
-				'/dns4/higdon.space/tcp/80/ws/p2p-webrtc-star'
+				'/ip4/127.0.0.1/tcp/13579/wss/p2p-webrtc-star'
+				// '/dns4/higdon.space/tcp/80/ws/p2p-webrtc-star'
 				// '/dns4/13579-b7144140-6152-4f25-a78f-fd54f59593ce.ws-eu01.gitpod.io/tcp/443/wss/p2p-webrtc-star/'
 			]
 		}

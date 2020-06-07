@@ -1,0 +1,11 @@
+{
+  "dm_list.title": "Direct Messages",
+  "server_list.action.server_add": "Add new server",
+  "login.action.signup": "Sign up",
+  "login.action.login": "Log in",
+  "login.message.existing_account": "Already have an account?",
+  "login.message.new_account": "Need an account?",
+  "login.message.welcome": "Welcome!",
+  "login.field.password": "Password",
+  "login.field.login": "Login"
+}

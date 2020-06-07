@@ -12,14 +12,15 @@
     "clean:platforms": "rimraf platforms",
     "debug:android": "npm run setup-webpack-config && tns debug android --bundle --env.development",
     "debug:ios": "npm run setup-webpack-config && tns debug ios --bundle --env.development",
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
     "preview:android": "npm run setup-webpack-config && tns preview --bundle --env.development --env.android",
     "preview:ios": "npm run setup-webpack-config && tns preview --bundle --env.development --env.ios",
     "remove-webpack-config": "node ./node_modules/vue-cli-plugin-nativescript-vue/lib/scripts/webpack-maintenance post",
     "serve:android": "npm run setup-webpack-config && tns run android --bundle --env.development",
     "serve:ios": "npm run setup-webpack-config && tns run ios --bundle --env.development",
     "serve:web": "vue-cli-service serve --mode development.web",
-    "webrtc-star": "star-signal --port=13579 --host=0.0.0.0",
-    "setup-webpack-config": "node ./node_modules/vue-cli-plugin-nativescript-vue/lib/scripts/webpack-maintenance pre"
+    "setup-webpack-config": "node ./node_modules/vue-cli-plugin-nativescript-vue/lib/scripts/webpack-maintenance pre",
+    "webrtc-star": "star-signal --port=13579 --host=0.0.0.0"
   },
   "dependencies": {
     "@anchor-chat/anchor-api": "git+https://github.com/Anchor-Chat/AnchorAPI.git",
@@ -40,6 +41,7 @@
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-cli-plugin-pug": "^1.0.7",
+    "vue-i18n": "^8.17.3",
     "vue-js-modal": "^2.0.0-rc.3",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0",
@@ -50,6 +52,8 @@
     "@babel/preset-env": "^7.10.2",
     "@babel/traverse": "^7.10.1",
     "@babel/types": "^7.10.2",
+    "@intlify/eslint-plugin-vue-i18n": "^0.4.1",
+    "@types/webpack": "^4.4.0",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "@vue/cli-plugin-babel": "^4.4.1",
@@ -81,6 +85,7 @@
     "string-replace-loader": "^2.3.0",
     "terser-webpack-plugin": "^3.0.3",
     "typescript": "^3.9.5",
+    "vue-cli-plugin-i18n": "~1.0.1",
     "vue-cli-plugin-nativescript-vue": "^0.3.1",
     "vue-template-compiler": "^2.6.11"
   },
