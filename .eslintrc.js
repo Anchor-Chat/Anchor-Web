@@ -13,8 +13,8 @@ module.exports = {
 		ecmaVersion: 2020
 	},
 	rules: {
-		'no-console': process.env.NODE_ENV === 'production' ? ['error'] : ['off'],
-		'no-debugger': process.env.NODE_ENV === 'production' ? ['error'] : ['off'],
+		'no-console': process.env.NODE_ENV === 's' ? ['warn'] : ['off'],
+		'no-debugger': process.env.NODE_ENV === 's' ? ['warn'] : ['off'],
 		indent: ['error', 'tab'],
 		'vue/script-indent': ['error', 'tab'],
 		'vue/html-indent': ['error', 'tab'],
@@ -24,5 +24,5 @@ module.exports = {
 		// 'vue-i18n/no-dynamic-keys': ['error'],
 		// 'vue-i18n/no-unused-keys': ['warn'],
 	},
-	ignorePatterns: ['webpack.config.js', 'vue.config.js']
+	ignorePatterns: ['webpack.config.js']
 };

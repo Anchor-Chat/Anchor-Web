@@ -55,7 +55,10 @@ export const routes: Array<RouteConfig> = [
 		component: LoginView
 	}
 ];
-export default new VueRouter({ routes });
+export default new VueRouter({
+	routes,
+	mode: 'history'
+});
 
 // import Vue from 'vue';
 // import VueRouter, { RouteConfig } from 'vue-router';

@@ -26,6 +26,8 @@ self.addEventListener('activate', (event) => {
 	});
 	node.on('ready', () => console.log('js-ipfs node is ready'));
 	node.on('error', (err) => console.log('js-ipfs node errored', err));
+
+	event.waitUntil(sw.clients.claim());
 });
 
 async function catAndRespond(hash) {
@@ -34,10 +36,6 @@ async function catAndRespond(hash) {
 	return new Response(data, headers);
 }
 
-registerRoute(/\/ipfs\/.*/, async ({ url }) => {
-	return catAndRespond((url || '').toString().split('/ipfs/')[1]);
-});
-
 if (process.env.NODE_ENV === 'production') {
 	precacheAndRoute(maniest);
 
@@ -45,6 +43,10 @@ if (process.env.NODE_ENV === 'production') {
 		'js/chunk-vendors.js'
 	]);
 }
+
+registerRoute(/\/ipfs\/.*/, async ({ url }) => {
+	return catAndRespond((url || '').toString().split('/ipfs/')[1]);
+});
 
 registerRoute(new NavigationRoute(createHandlerBoundToURL('/index.html'), {
 	denylist: [

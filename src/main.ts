@@ -12,6 +12,8 @@ import 'materialize-css';
 
 import './styles/style';
 
+import './serviceWorker';
+
 import VModal from 'vue-js-modal';
 import i18n from './i18n';
 
