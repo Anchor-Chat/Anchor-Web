@@ -19,7 +19,7 @@ import ChannelList from '../channel-list/index.vue';
 
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import $ from 'jquery';
-import { AnchorAPI, TextChannel } from '@anchor-chat/anchor-api';
+import { AnchorAPI, TextChannel } from '@anchor-chat/api';
 import MessageView from '../../views/MessageView.vue';
 
 @Component({

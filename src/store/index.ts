@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { AnchorAPIBuilder, AnchorAPI, TextChannel } from '@anchor-chat/anchor-api';
+import { AnchorAPIBuilder, AnchorAPI, TextChannel } from '@anchor-chat/api';
 // import ipfsClient from 'ipfs-http-client';
 
 Vue.use(Vuex);

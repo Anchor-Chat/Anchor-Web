@@ -42,7 +42,7 @@ import MessageSend from 'components/message-send/MessageSend.vue';
 import $ from 'jquery';
 
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
-import { AnchorAPI, Message, TextChannel } from '@anchor-chat/anchor-api';
+import { AnchorAPI, Message, TextChannel } from '@anchor-chat/api';
 
 @Component({
 	components: {

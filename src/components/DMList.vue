@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
-import { DMChannel, AnchorAPI } from '@anchor-chat/anchor-api';
+import { DMChannel, AnchorAPI } from '@anchor-chat/api';
 import { EventEmitter } from 'events';
 import ChannelList from './ChannelList.vue';
 
