@@ -2,7 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { AnchorAPIBuilder, AnchorAPI, TextChannel } from '@anchor-chat/api';
-// import ipfsClient from 'ipfs-http-client';
+
+import { postMsgAndWait } from '../util';
 
 Vue.use(Vuex);
 
@@ -31,6 +32,47 @@ const ipfsConfig = {
 		}
 	}
 };
+
+async function pickIpfs() {
+	if ('ipfs' in window) {
+		const ipfsGlobal = (window as any).ipfs;
+
+		if (ipfsGlobal.enable) {
+
+		} else {
+			return ipfsGlobal;
+		}
+	} else {
+		// TODO: Uncomment when WebRTC in service workers becomes a thing or a different transport is available
+		// if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+		// 	await postMsgAndWait(navigator.serviceWorker.controller, { action: "ipfs.start", options: ipfsConfig });
+		// 	const { default: { createProxyClient } } = await import(/* webpackChunkName: ipfs-postmsg-proxy */ 'ipfs-postmsg-proxy');
+
+		// 	const node = createProxyClient({
+		// 		addListener: navigator.serviceWorker.addEventListener.bind(navigator.serviceWorker),
+		// 		removeListener: navigator.serviceWorker.removeEventListener.bind(navigator.serviceWorker),
+		// 		postMessage: (data) => navigator.serviceWorker.controller?.postMessage(data)
+		// 	});
+
+		// 	return node;
+		// }
+	}
+
+	return null;
+}
+
+async function setupAnchor(login, password): Promise<AnchorAPIBuilder> {
+	return new AnchorAPIBuilder()
+		.setCredentials(login, password)
+		.setIPFSConfig(ipfsConfig)
+		// .setIPFS(ipfsClient({
+		// 	host: 'localhost',
+		// 	port: 5001,
+		// 	protocol: 'http'
+		// }))
+		.setIPFS(await pickIpfs())
+		.setDirectory(login);
+}
 
 export default new Vuex.Store<RootStore>({
 	state: {
@@ -65,60 +107,38 @@ export default new Vuex.Store<RootStore>({
 		}
 	},
 	actions: {
-		async createAccount(context, data) {
+		createAccount(context, data) {
 			return new Promise((resolve, reject) => {
-				const builder = new AnchorAPIBuilder()
-					.setCredentials(data.login, data.password)
-					.setIPFSConfig(ipfsConfig)
-					// .setIPFS(ipfsClient({
-					// 	host: 'localhost',
-					// 	port: 5001,
-					// 	protocol: 'http'
-					// }))
-					.setDirectory(data.login);
-
-				// if (window.ipfs && window.ipfs.enable) {
-				// 	let ipfs = await window.ipfs.enable();
-
-				// 	try {
-				// 		await ipfs.pubsub.ls();
-
-				// 		builder.setIPFS(ipfs);
-				// 	} catch (e) {
-
-				// 	}
-				// }
-
-				builder.createAccount().then((api) => {
-					context.commit('SET_LOGIN_INFO', {
-						login: data.login,
-						password: data.password,
-						api
-					});
-					resolve(api);
-				});
+				setupAnchor(data.login, data.password).then((builder) => {
+					builder
+						.createAccount()
+						.then((api) => {
+							context.commit('SET_LOGIN_INFO', {
+								login: data.login,
+								password: data.password,
+								api
+							});
+							resolve(api);
+						})
+						.catch(reject);
+				}).catch(reject);
 			});
 		},
 		login(context, data) {
 			return new Promise((resolve, reject) => {
-				const builder = new AnchorAPIBuilder()
-					.setCredentials(data.login, data.password)
-					.setIPFSConfig(ipfsConfig)
-					// .setIPFS(ipfsClient({
-					// 	host: 'localhost',
-					// 	port: 5001,
-					// 	protocol: 'http'
-					// }))
-					.setDirectory(data.login);
-
-				builder.login().then((api) => {
-					context.commit('SET_LOGIN_INFO', {
-						login: data.login,
-						password: data.password,
-						api
-					});
-					resolve(api);
-				});
+				setupAnchor(data.login, data.password).then((builder) => {
+					builder
+						.login()
+						.then((api) => {
+							context.commit('SET_LOGIN_INFO', {
+								login: data.login,
+								password: data.password,
+								api
+							});
+							resolve(api);
+						})
+						.catch(reject);
+				}).catch(reject);
 			});
 		}
 	}
