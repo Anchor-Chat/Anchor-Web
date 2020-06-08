@@ -13,8 +13,8 @@ module.exports = {
 		ecmaVersion: 2020
 	},
 	rules: {
-		'no-console': 'off',
-		'no-debugger': 'off',
+		'no-console': process.env.NODE_ENV === 'production' ? ['error'] : ['off'],
+		'no-debugger': process.env.NODE_ENV === 'production' ? ['error'] : ['off'],
 		indent: ['error', 'tab'],
 		'vue/script-indent': ['error', 'tab'],
 		'vue/html-indent': ['error', 'tab'],
