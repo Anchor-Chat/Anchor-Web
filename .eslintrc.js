@@ -19,7 +19,7 @@ module.exports = {
 		'vue/script-indent': ['error', 'tab'],
 		'vue/html-indent': ['error', 'tab'],
 		semi: ['warn', 'always'],
-		'no-tabs': ['off', { allowIndentationTabs: true }],
+		'no-tabs': ['warn', { allowIndentationTabs: true }],
 		'space-before-function-paren': ['error', { anonymous: 'always', named: 'never' }]
 		// 'vue-i18n/no-dynamic-keys': ['error'],
 		// 'vue-i18n/no-unused-keys': ['warn'],

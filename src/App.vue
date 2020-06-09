@@ -53,6 +53,9 @@ export default class App extends Vue {
 				}
 			}
 		}
+		if (this.$route.query.lang) {
+			this.$i18n.locale = this.$route.query.lang;
+		}
 	}
 
 	public goTo(route) {
